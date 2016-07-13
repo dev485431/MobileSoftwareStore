@@ -1,4 +1,4 @@
-package com.dataart.mss.config;
+package com.dataart.softwarestore.web.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +11,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan(basePackages = "com.dataart.mss")
+@ComponentScan(basePackages = "com.dataart.softwarestore")
 @PropertySource({"classpath:jdbc.properties", "classpath:messages.properties"})
 public class AppConfig {
 
