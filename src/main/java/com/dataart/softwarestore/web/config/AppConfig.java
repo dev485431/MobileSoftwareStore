@@ -1,18 +1,22 @@
 package com.dataart.softwarestore.web.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan(basePackages = "com.dataart.softwarestore")
-@PropertySource({"classpath:jdbc.properties", "classpath:messages.properties"})
+@PropertySource({"classpath:jdbc.properties", "classpath:hibernate.properties", "classpath:messages.properties"})
 public class AppConfig {
 
     @Bean
@@ -30,5 +34,23 @@ public class AppConfig {
         dataSource.setUsername(username);
         dataSource.setPassword(password);
         return dataSource;
+    }
+
+    @Bean
+    @Autowired
+    public LocalSessionFactoryBean getSessionFactory(DataSource dataSource, HibernateProperties hibernateProperties) {
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource);
+        sessionFactory.setPackagesToScan(new String[]{"com.dataart.softwarestore"});
+        sessionFactory.setHibernateProperties(hibernateProperties.getProperties());
+        return sessionFactory;
+    }
+
+    @Bean
+    @Autowired
+    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
+        HibernateTransactionManager txManager = new HibernateTransactionManager();
+        txManager.setSessionFactory(sessionFactory);
+        return txManager;
     }
 }
