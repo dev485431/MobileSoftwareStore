@@ -18,5 +18,45 @@ public class Statistics {
     @OneToOne(mappedBy = "statistics")
     private Program program;
 
+    public Statistics() {
+    }
 
+    public Statistics(Date timeUploaded, Long downloads, Program program) {
+        this.timeUploaded = timeUploaded;
+        this.downloads = downloads;
+        this.program = program;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getTimeUploaded() {
+        return timeUploaded;
+    }
+
+    public void setTimeUploaded(Date timeUploaded) {
+        this.timeUploaded = timeUploaded;
+    }
+
+    public Long getDownloads() {
+        return downloads;
+    }
+
+    public void setDownloads(Long downloads) {
+        this.downloads = downloads;
+    }
+
+    public Program getProgram() {
+        return program;
+    }
+
+    public void setProgram(Program program) {
+        this.program = program;
+    }
+    
 }

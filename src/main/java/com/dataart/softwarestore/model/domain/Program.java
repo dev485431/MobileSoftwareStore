@@ -27,5 +27,72 @@ public class Program {
     @MapKey(name = "size")
     private Map<Integer, Image> image;
 
+    public Program() {
+    }
+
+    public Program(String name, String description, String filename, Category category, Statistics statistics, Map<Integer, Image> image) {
+        this.name = name;
+        this.description = description;
+        this.filename = filename;
+        this.category = category;
+        this.statistics = statistics;
+        this.image = image;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Statistics getStatistics() {
+        return statistics;
+    }
+
+    public void setStatistics(Statistics statistics) {
+        this.statistics = statistics;
+    }
+
+    public Map<Integer, Image> getImage() {
+        return image;
+    }
+
+    public void setImage(Map<Integer, Image> image) {
+        this.image = image;
+    }
 }
 
