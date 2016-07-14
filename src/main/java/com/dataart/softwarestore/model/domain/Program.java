@@ -25,18 +25,18 @@ public class Program {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "program")
     @MapKey(name = "size")
-    private Map<Integer, Image> image;
+    private Map<Integer, Image> images;
 
     public Program() {
     }
 
-    public Program(String name, String description, String filename, Category category, Statistics statistics, Map<Integer, Image> image) {
+    public Program(String name, String description, String filename, Category category, Statistics statistics, Map<Integer, Image> images) {
         this.name = name;
         this.description = description;
         this.filename = filename;
         this.category = category;
         this.statistics = statistics;
-        this.image = image;
+        this.images = images;
     }
 
     public Long getId() {
@@ -87,12 +87,12 @@ public class Program {
         this.statistics = statistics;
     }
 
-    public Map<Integer, Image> getImage() {
-        return image;
+    public Map<Integer, Image> getImages() {
+        return images;
     }
 
-    public void setImage(Map<Integer, Image> image) {
-        this.image = image;
+    public void setImages(Map<Integer, Image> images) {
+        this.images = images;
     }
 }
 
