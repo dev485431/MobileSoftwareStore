@@ -1,7 +1,7 @@
 package com.dataart.softwarestore.model.domain;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.Map;
 
 @Entity
 @Table(name = "programs")
@@ -24,7 +24,8 @@ public class Program {
     private Statistics statistics;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "program")
-    private Set<Image> image;
+    @MapKey(name = "size")
+    private Map<Integer, Image> image;
 
 }
 
