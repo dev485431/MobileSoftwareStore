@@ -1,25 +1,30 @@
 package com.dataart.softwarestore.model.domain;
 
 import javax.persistence.*;
-import java.util.Map;
-import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @Table(name = "programs")
 public class Program {
 
     @Id
-    @GeneratedValue
-    @Column(name = "program_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // column with foreign keys to ProgramDetails
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="details_id")
-    private ProgramDetails programDetails;
+    private String name;
+    private String description;
+    private String filename;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private Map<Integer, ProgramPicture> programPictures;
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "statistics_id")
+    private Statistics statistics;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "program")
+    private Set<Image> image;
 
 }
+
