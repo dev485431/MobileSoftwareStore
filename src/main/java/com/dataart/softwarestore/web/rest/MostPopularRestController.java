@@ -21,7 +21,7 @@ public class MostPopularRestController {
     @Autowired
     private MostPopularManager mostPopularManager;
 
-    @RequestMapping(value = "get", method = RequestMethod.GET)
+    @RequestMapping(value = "programs", method = RequestMethod.GET)
     private List<Program> getTopPrograms() {
         List<Program> topPrograms = mostPopularManager.getTopPrograms(topProgramsToQuery, QueryResultsOrder.DESCENDING, QueryResultsOrder.DESCENDING);
         return topPrograms;
