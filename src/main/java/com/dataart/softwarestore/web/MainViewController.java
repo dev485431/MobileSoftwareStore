@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class MainController {
+public class MainViewController {
 
     private static final String MAIN_PAGE = "index";
     private static final String LOGIN_PAGE = "login";

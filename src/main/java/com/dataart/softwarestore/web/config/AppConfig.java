@@ -11,10 +11,12 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 @Configuration
+@EnableTransactionManagement
 @ComponentScan(basePackages = "com.dataart.softwarestore")
 @PropertySource({"classpath:jdbc.properties", "classpath:hibernate.properties", "classpath:messages.properties"})
 public class AppConfig {

@@ -40,4 +40,5 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public MessageSourceAccessor messageSourceAccessor() {
         return new MessageSourceAccessor(messageSource());
     }
+
 }
