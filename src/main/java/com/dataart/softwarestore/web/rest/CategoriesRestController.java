@@ -16,6 +16,7 @@ public class CategoriesRestController {
     @Autowired
     private CategoryManager categoryManager;
 
+
     @RequestMapping(value = "get", method = RequestMethod.GET)
     private List<Category> getAllCategories() {
         List<Category> allCategories = categoryManager.getAllCategories();
