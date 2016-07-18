@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/rest/programs")
-public class ProgramsController {
+public class PaginationController {
 
     @Autowired
     private ProgramsManager programsManager;

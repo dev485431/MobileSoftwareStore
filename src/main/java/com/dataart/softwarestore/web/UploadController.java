@@ -14,9 +14,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @RestController
-public class UploadAndValidationController {
+public class UploadController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UploadAndValidationController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UploadController.class);
     public static final String ROOT = "uploads";
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
