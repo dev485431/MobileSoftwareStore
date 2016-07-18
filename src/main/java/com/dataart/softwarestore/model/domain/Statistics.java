@@ -9,7 +9,7 @@ public class Statistics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "time_uploaded")
     private Date timeUploaded;
@@ -27,11 +27,11 @@ public class Statistics {
         this.program = program;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -58,5 +58,5 @@ public class Statistics {
     public void setProgram(Program program) {
         this.program = program;
     }
-    
+
 }

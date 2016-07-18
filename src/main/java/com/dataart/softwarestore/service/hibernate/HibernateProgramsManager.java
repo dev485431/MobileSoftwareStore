@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class HibernateProgramsManager implements ProgramsManager {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Program> getPage(Integer pageNum, Integer categoryId, Integer itemsPerPage) {
         Integer firstResult = pageNum * itemsPerPage;
         Criteria criteria = session().createCriteria(Program.class);

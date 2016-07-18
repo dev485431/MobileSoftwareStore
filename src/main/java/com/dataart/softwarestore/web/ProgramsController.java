@@ -1,7 +1,7 @@
 package com.dataart.softwarestore.web;
 
 import com.dataart.softwarestore.model.domain.Program;
-import com.dataart.softwarestore.service.hibernate.HibernateProgramsManager;
+import com.dataart.softwarestore.service.ProgramsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class ProgramsController {
 
     @Autowired
-    private HibernateProgramsManager programsManager;
+    private ProgramsManager programsManager;
 
     @RequestMapping(value = "page/{pageNum:[\\d]+}", method = RequestMethod.GET)
     private List<Program> getPage(@PathVariable("pageNum") Integer pageNum, @RequestParam(value = "categoryId") Integer categoryId, @RequestParam(value = "itemsPerPage") Integer itemsPerPage) {
