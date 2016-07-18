@@ -19,8 +19,7 @@ public class CategoriesController {
 
     @RequestMapping(value = "get", method = RequestMethod.GET)
     private List<Category> getAllCategories() {
-        List<Category> allCategories = categoryManager.getAllCategories();
-        return allCategories;
+        return categoryManager.getAllCategories();
     }
 
 }

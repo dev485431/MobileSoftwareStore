@@ -24,12 +24,13 @@ public class HibernateMostPopularManager implements MostPopularManager {
     @Override
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
-    public List<Program> getTopPrograms(int limit, QueryResultsOrder downloadOrder, QueryResultsOrder timeUploadedOrder) {
+    public List<Program> getTopPrograms(Integer limit, QueryResultsOrder downloadOrder, QueryResultsOrder timeUploadedOrder) {
         String query = "from Program p order by p.statistics.downloads " + downloadOrder.value() + ", p.statistics.timeUploaded " + timeUploadedOrder.value();
         return session().createQuery(query)
                 .setMaxResults(limit)
                 .setCacheable(true).list();
     }
+
 }
 
 

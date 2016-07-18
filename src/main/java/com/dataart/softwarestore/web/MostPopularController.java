@@ -23,8 +23,7 @@ public class MostPopularController {
 
     @RequestMapping(value = "get", method = RequestMethod.GET)
     private List<Program> getTopPrograms() {
-        List<Program> topPrograms = mostPopularManager.getTopPrograms(topProgramsLimitToQuery, QueryResultsOrder.DESCENDING, QueryResultsOrder.DESCENDING);
-        return topPrograms;
+        return mostPopularManager.getTopPrograms(topProgramsLimitToQuery, QueryResultsOrder.DESCENDING, QueryResultsOrder.DESCENDING);
     }
 
 
