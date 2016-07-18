@@ -16,14 +16,14 @@ import java.util.List;
 public class MostPopularRestController {
 
 
-    @Value("${top.programs.to.query}")
-    private int topProgramsToQuery;
+    @Value("${top.programs.quantity.to.query}")
+    private int topProgramsQuantityToQuery;
     @Autowired
     private MostPopularManager mostPopularManager;
 
-    @RequestMapping(value = "programs", method = RequestMethod.GET)
+    @RequestMapping(value = "get", method = RequestMethod.GET)
     private List<Program> getTopPrograms() {
-        List<Program> topPrograms = mostPopularManager.getTopPrograms(topProgramsToQuery, QueryResultsOrder.DESCENDING, QueryResultsOrder.DESCENDING);
+        List<Program> topPrograms = mostPopularManager.getTopPrograms(topProgramsQuantityToQuery, QueryResultsOrder.DESCENDING, QueryResultsOrder.DESCENDING);
         return topPrograms;
     }
 
