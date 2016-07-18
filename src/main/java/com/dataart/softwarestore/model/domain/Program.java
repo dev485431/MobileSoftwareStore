@@ -14,6 +14,10 @@ public class Program {
     private String name;
     private String description;
     private String filename;
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(nullable=false, columnDefinition="mediumblob")
+    private byte[] data;
 
     @OneToOne
     @JoinColumn(name = "category_id")
@@ -30,10 +34,11 @@ public class Program {
     public Program() {
     }
 
-    public Program(String name, String description, String filename, Category category, Statistics statistics, Map<Integer, Image> images) {
+    public Program(String name, String description, String filename, byte[] data, Category category, Statistics statistics, Map<Integer, Image> images) {
         this.name = name;
         this.description = description;
         this.filename = filename;
+        this.data = data;
         this.category = category;
         this.statistics = statistics;
         this.images = images;
@@ -71,6 +76,14 @@ public class Program {
         this.filename = filename;
     }
 
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -95,4 +108,3 @@ public class Program {
         this.images = images;
     }
 }
-

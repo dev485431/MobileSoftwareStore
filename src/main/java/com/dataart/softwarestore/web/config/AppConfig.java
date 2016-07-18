@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.dataart.softwarestore")
-@PropertySource({"classpath:jdbc.properties", "classpath:hibernate.properties", "classpath:server.properties", "classpath:messages.properties"})
+@PropertySource({"classpath:jdbc.properties", "classpath:hibernate.properties", "classpath:server.properties"})
 public class AppConfig {
 
     @Bean
