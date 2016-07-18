@@ -1,4 +1,4 @@
-package com.dataart.softwarestore.web.rest;
+package com.dataart.softwarestore.web;
 
 import com.dataart.softwarestore.model.domain.Category;
 import com.dataart.softwarestore.service.CategoryManager;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/rest/categories")
-public class CategoriesRestController {
+public class CategoriesController {
 
     @Autowired
     private CategoryManager categoryManager;

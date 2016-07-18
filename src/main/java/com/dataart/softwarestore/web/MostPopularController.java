@@ -1,4 +1,4 @@
-package com.dataart.softwarestore.web.rest;
+package com.dataart.softwarestore.web;
 
 import com.dataart.softwarestore.model.domain.Program;
 import com.dataart.softwarestore.service.MostPopularManager;
@@ -13,17 +13,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/rest/top")
-public class MostPopularRestController {
+public class MostPopularController {
 
 
-    @Value("${top.programs.quantity.to.query}")
-    private int topProgramsQuantityToQuery;
+    @Value("${top.programs.limit.to.query}")
+    private int topProgramsLimitToQuery;
     @Autowired
     private MostPopularManager mostPopularManager;
 
     @RequestMapping(value = "get", method = RequestMethod.GET)
     private List<Program> getTopPrograms() {
-        List<Program> topPrograms = mostPopularManager.getTopPrograms(topProgramsQuantityToQuery, QueryResultsOrder.DESCENDING, QueryResultsOrder.DESCENDING);
+        List<Program> topPrograms = mostPopularManager.getTopPrograms(topProgramsLimitToQuery, QueryResultsOrder.DESCENDING, QueryResultsOrder.DESCENDING);
         return topPrograms;
     }
 
