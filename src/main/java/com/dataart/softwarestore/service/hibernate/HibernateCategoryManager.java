@@ -23,6 +23,7 @@ public class HibernateCategoryManager implements CategoryManager {
 
     @Override
     @Transactional(readOnly = true)
+    @SuppressWarnings("unchecked")
     public List<Category> getAllCategories() {
         return session().createQuery("from Category").list();
     }
