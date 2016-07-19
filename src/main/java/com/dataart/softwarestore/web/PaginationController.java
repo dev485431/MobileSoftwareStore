@@ -1,7 +1,7 @@
 package com.dataart.softwarestore.web;
 
 import com.dataart.softwarestore.model.domain.Program;
-import com.dataart.softwarestore.service.ProgramsManager;
+import com.dataart.softwarestore.service.PaginationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +12,11 @@ import java.util.List;
 public class PaginationController {
 
     @Autowired
-    private ProgramsManager programsManager;
+    private PaginationManager paginationManager;
 
     @RequestMapping(value = "page/{pageNum:[\\d]+}", method = RequestMethod.GET)
     private List<Program> getPage(@PathVariable("pageNum") Integer pageNum, @RequestParam(value = "categoryId") Integer categoryId, @RequestParam(value = "itemsPerPage") Integer itemsPerPage) {
-        return programsManager.getPage(pageNum, categoryId, itemsPerPage);
+        return paginationManager.getPage(pageNum, categoryId, itemsPerPage);
     }
 
 }

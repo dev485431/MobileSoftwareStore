@@ -15,16 +15,12 @@ public class Statistics {
     private Date timeUploaded;
     private Long downloads;
 
-    @OneToOne(mappedBy = "statistics")
-    private Program program;
-
     public Statistics() {
     }
 
-    public Statistics(Date timeUploaded, Long downloads, Program program) {
+    public Statistics(Date timeUploaded, Long downloads) {
         this.timeUploaded = timeUploaded;
         this.downloads = downloads;
-        this.program = program;
     }
 
     public Integer getId() {
@@ -50,13 +46,4 @@ public class Statistics {
     public void setDownloads(Long downloads) {
         this.downloads = downloads;
     }
-
-    public Program getProgram() {
-        return program;
-    }
-
-    public void setProgram(Program program) {
-        this.program = program;
-    }
-
 }

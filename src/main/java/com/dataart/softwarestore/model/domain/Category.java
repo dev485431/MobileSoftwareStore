@@ -1,10 +1,14 @@
 package com.dataart.softwarestore.model.domain;
 
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "categories")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Category {
 
     @Id

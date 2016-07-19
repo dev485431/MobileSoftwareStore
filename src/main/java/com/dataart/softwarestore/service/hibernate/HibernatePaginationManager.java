@@ -1,7 +1,7 @@
 package com.dataart.softwarestore.service.hibernate;
 
 import com.dataart.softwarestore.model.domain.Program;
-import com.dataart.softwarestore.service.ProgramsManager;
+import com.dataart.softwarestore.service.PaginationManager;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class HibernateProgramsManager implements ProgramsManager {
+public class HibernatePaginationManager implements PaginationManager {
 
     @Autowired
     private SessionFactory sessionFactory;
