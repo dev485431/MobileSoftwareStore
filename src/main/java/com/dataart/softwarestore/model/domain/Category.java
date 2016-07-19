@@ -14,9 +14,6 @@ public class Category {
     private String name;
     private String description;
 
-//    @OneToOne(mappedBy = "category")
-//    private Program program;
-
     public Category() {
     }
 
