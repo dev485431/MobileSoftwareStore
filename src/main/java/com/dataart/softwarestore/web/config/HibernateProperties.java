@@ -16,7 +16,12 @@ public class HibernateProperties {
     private String hibernateQueryCache;
     @Value("${hibernate.cache.region.factory_class}")
     private String cacheRegionFactoryClass;
-
+    @Value("${hibernate.show_sql}")
+    private String showSql;
+    @Value("${hibernate.format_sql}")
+    private String formatSql;
+    @Value("${hibernate.use_sql_comments}")
+    private String useSqlComments;
 
     @SuppressWarnings("serial")
     public Properties getProperties() {
@@ -26,6 +31,9 @@ public class HibernateProperties {
                 setProperty("hibernate.hbm2ddl.auto", hibernateHbm2ddl);
                 setProperty("hibernate.cache.use_query_cache", hibernateQueryCache);
                 setProperty("hibernate.cache.region.factory_class", cacheRegionFactoryClass);
+                setProperty("hibernate.show_sql", showSql);
+                setProperty("hibernate.format_sql", formatSql);
+                setProperty("hibernate.use_sql_comments", useSqlComments);
             }
         };
     }

@@ -14,16 +14,15 @@ public class Category {
     private String name;
     private String description;
 
-    @OneToOne(mappedBy = "category")
-    private Program program;
+//    @OneToOne(mappedBy = "category")
+//    private Program program;
 
     public Category() {
     }
 
-    public Category(String name, String description, Program program) {
+    public Category(String name, String description) {
         this.name = name;
         this.description = description;
-        this.program = program;
     }
 
     public Integer getId() {
@@ -48,13 +47,5 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Program getProgram() {
-        return program;
-    }
-
-    public void setProgram(Program program) {
-        this.program = program;
     }
 }
