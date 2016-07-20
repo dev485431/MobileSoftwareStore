@@ -24,4 +24,11 @@ public class HibernateProgramManager implements ProgramManager {
         session().save(program);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public boolean programNameExists(String name) {
+        Long count = (Long) session().createQuery("select count(*) from Program where name=:name").setParameter("name", name).uniqueResult();
+        return count == 1;
+    }
+
 }

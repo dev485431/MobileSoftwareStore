@@ -6,4 +6,6 @@ public interface ProgramManager {
 
     void addProgram(Program program);
 
+    boolean programNameExists(String name);
+
 }
