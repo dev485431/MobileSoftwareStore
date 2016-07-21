@@ -28,7 +28,7 @@ public class DefaultExceptionHandler {
     private static final String DEFAULT_ERROR_VIEW = "error";
     private static final String REDIRECT_DB_EXCEPTION = "error";
     private static final String VIEW_404 = "error404";
-    private static final String MAX_SIZE_EXCEEDED_VIEW = "details";
+    private static final String MAX_SIZE_EXCEEDED_VIEW = "/details";
     @Autowired
     private MessageSource messageSource;
 
