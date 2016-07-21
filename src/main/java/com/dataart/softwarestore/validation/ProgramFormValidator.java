@@ -32,17 +32,11 @@ public class ProgramFormValidator extends LocalValidatorFactoryBean {
             ProgramForm programForm = (ProgramForm) target;
             MultipartFile programFile = ((ProgramForm) target).getFile();
 
-            LOG.warn("Content type: " + programFile.getContentType());
-            LOG.warn("File size: " + programFile.getSize());
-            LOG.warn("File name: " + programFile.getOriginalFilename());
-
             if (!programFile.getContentType().equals(MIME_APPLICATION_ZIP)) {
                 errors.rejectValue("file", "error.file.extension");
             }
-            if (programFile == null || programFile.isEmpty()) {
+            if (programFile == null) {
                 errors.rejectValue("file", "error.empty.file");
-            } else if (programFile.getSize() > uploadedFileMaxSizeBytes) {
-                errors.rejectValue("file", "error.file.size");
             }
             if (programManager.programNameExists(programForm.getName())) {
                 errors.rejectValue("name", "error.program.name.exists");

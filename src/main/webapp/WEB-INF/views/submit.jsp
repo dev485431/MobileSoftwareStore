@@ -19,6 +19,7 @@
 
     <div class="row">
         <h2>Most Popular</h2>
+        ${error}
     </div>
 
     <div class="row">
