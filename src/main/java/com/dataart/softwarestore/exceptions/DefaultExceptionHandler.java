@@ -43,7 +43,7 @@ public class DefaultExceptionHandler {
                     LocaleContextHolder.getLocale());
             flash.put("fileError", message);
         } else {
-            flash.put("error", messageSource.getMessage("hint.contact.admin", null, LocaleContextHolder.getLocale()) + ex.getMessage());
+            flash.put("error", messageSource.getMessage("msg.contact.admin", null, LocaleContextHolder.getLocale()) + ex.getMessage());
         }
         return model;
     }
