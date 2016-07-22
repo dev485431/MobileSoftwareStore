@@ -32,20 +32,16 @@ public class DefaultExceptionHandler {
     public RedirectView handleMultipartException(Exception ex, HttpServletRequest request) {
         RedirectView model = new RedirectView(SUBMIT_PROGRAM_VIEW);
         FlashMap flash = RequestContextUtils.getOutputFlashMap(request);
-        if (ex instanceof MultipartException) {
-            MultipartException mEx = (MultipartException) ex;
+        MultipartException mEx = (MultipartException) ex;
 
-            if (ex.getCause() instanceof FileUploadBase.FileSizeLimitExceededException) {
-                FileUploadBase.FileSizeLimitExceededException flEx = (FileUploadBase.FileSizeLimitExceededException) mEx.getCause();
-                float permittedSize = flEx.getPermittedSize() / SIZE_DIVIDER;
-                String message = messageSource.getMessage(
-                        "error.file.maxsize",
-                        new Object[]{flEx.getFileName(), permittedSize},
-                        LocaleContextHolder.getLocale());
-                flash.put("fileError", message);
-            } else {
-                flash.put("error", messageSource.getMessage("hint.contact.admin", null, LocaleContextHolder.getLocale()) + ex.getMessage());
-            }
+        if (ex.getCause() instanceof FileUploadBase.FileSizeLimitExceededException) {
+            FileUploadBase.FileSizeLimitExceededException flEx = (FileUploadBase.FileSizeLimitExceededException) mEx.getCause();
+            float permittedSize = flEx.getPermittedSize() / SIZE_DIVIDER;
+            String message = messageSource.getMessage(
+                    "error.file.maxsize",
+                    new Object[]{flEx.getFileName(), permittedSize},
+                    LocaleContextHolder.getLocale());
+            flash.put("fileError", message);
         } else {
             flash.put("error", messageSource.getMessage("hint.contact.admin", null, LocaleContextHolder.getLocale()) + ex.getMessage());
         }
@@ -56,7 +52,7 @@ public class DefaultExceptionHandler {
     public RedirectView handleIOException(Exception ex, HttpServletRequest request) {
         RedirectView model = new RedirectView(SUBMIT_PROGRAM_VIEW);
         FlashMap flash = RequestContextUtils.getOutputFlashMap(request);
-        flash.put("fileError", messageSource.getMessage("error.file.io", null, LocaleContextHolder.getLocale()));
+        flash.put("fileError", messageSource.getMessage("error.file.io", null, LocaleContextHolder.getLocale()) + ex.getMessage());
         return model;
     }
 
@@ -74,6 +70,5 @@ public class DefaultExceptionHandler {
         mav.setViewName(DEFAULT_ERROR_VIEW);
         return mav;
     }
-
 
 }
