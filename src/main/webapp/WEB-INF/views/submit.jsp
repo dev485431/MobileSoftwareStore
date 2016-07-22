@@ -40,6 +40,13 @@
                                 placeholder="Application name"/>
                 </div>
                 <div class="form-group">
+                    <label for="name">Category</label><br>
+                    <form:errors cssClass="bg-danger" path="category"/>
+                    <c:forEach var="category" items="${allCategories}">
+                        <c:out value="${category}"/>
+                    </c:forEach>
+                </div>
+                <div class="form-group">
                     <label for="description">Description</label><br>
                     <form:errors cssClass="bg-danger" path="description"/>
                     <form:textarea path="description" value="${programForm.description}" cssClass="form-control"
