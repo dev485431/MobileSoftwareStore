@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.validation.Validator;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
-public class ProgramFormValidator extends LocalValidatorFactoryBean {
+public class ProgramFormValidator implements Validator {
 
     private static final Logger LOG = Logger.getLogger(ProgramFormValidator.class);
-    private static final String MIME_APPLICATION_ZIP = "application/zip";
+    private static final String ZIP_EXTENSION = ".zip";
     @Autowired
     private ProgramManager programManager;
     @Value("${uploaded.file.max.size.bytes}")
@@ -26,19 +26,20 @@ public class ProgramFormValidator extends LocalValidatorFactoryBean {
     }
 
     @Override
-    public void validate(Object target, Errors errors, final Object... validationHints) {
-        super.validate(target, errors, validationHints);
+    public void validate(Object target, Errors errors) {
         if (!errors.hasErrors()) {
             ProgramForm programForm = (ProgramForm) target;
             MultipartFile programFile = ((ProgramForm) target).getFile();
 
-            if (!programFile.getContentType().equals(MIME_APPLICATION_ZIP)) {
-                errors.rejectValue("file", "error.file.extension");
-            }
-            if (programFile == null) {
+            if (programFile.getSize() == 0) {
+                LOG.debug("The file is empty");
                 errors.rejectValue("file", "error.empty.file");
             }
+            if (!programFile.getOriginalFilename().toLowerCase().endsWith(ZIP_EXTENSION)) {
+                errors.rejectValue("file", "error.file.extension");
+            }
             if (programManager.programNameExists(programForm.getName())) {
+                LOG.debug("Program name already exists in the database");
                 errors.rejectValue("name", "error.program.name.exists");
             }
         }

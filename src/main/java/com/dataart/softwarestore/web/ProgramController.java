@@ -25,7 +25,7 @@ public class ProgramController {
     private static final Logger LOG = Logger.getLogger(ProgramController.class);
     private static final String PROGRAM_SUBMIT_PAGE = "submit";
     private static final String PROGRAM_DETAILS_PAGE = "details";
-    
+
     @Autowired
     private ProgramManager programManager;
     @Autowired
@@ -35,7 +35,7 @@ public class ProgramController {
 
     @InitBinder("programForm")
     private void initProgramFormValidation(WebDataBinder binder) {
-        binder.setValidator(programFormValidator);
+        binder.addValidators(programFormValidator);
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.GET)
