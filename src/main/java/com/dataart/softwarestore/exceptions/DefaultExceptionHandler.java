@@ -44,10 +44,10 @@ public class DefaultExceptionHandler {
                         LocaleContextHolder.getLocale());
                 flash.put("fileError", message);
             } else {
-                flash.put("fileError", "Please contact your administrator: " + ex.getMessage());
+                flash.put("error", "Please contact your administrator: /n" + ex.getMessage());
             }
         } else {
-            flash.put("fileError", "Please contact your administrator: " + ex.getMessage());
+            flash.put("error", "Please contact your administrator: /n" + ex.getMessage());
         }
         return model;
     }

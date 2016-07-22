@@ -19,6 +19,7 @@
 
     <div class="row">
         <h2>Most Popular</h2>
+        <span>${error}</span>
     </div>
 
     <div class="row">
@@ -46,7 +47,7 @@
                 </div>
                 <div class="form-group">
                     <label for="file">File</label><br>
-                    <span>${fileError}</span>
+                    <span class="bg-danger">${fileError}</span>
                     <form:errors cssClass="bg-danger" path="file"/>
                     <input type="file" name="file" id="file">
                     <p class="help-block">* Maximum file size is 15MB</p>
@@ -61,7 +62,6 @@
 
 </div>
 </div>
-
 
 </body>
 </html>
