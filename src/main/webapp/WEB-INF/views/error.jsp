@@ -3,6 +3,8 @@
 <div class="container" align="center">
     <h1>Our application encountered an error</h1>
     ${exception.message}<br>
+    Please contact your administrator<br>
+    <a href="/">Go back to the main page</a>
 
 </div>
 

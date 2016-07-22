@@ -19,7 +19,6 @@
 
     <div class="row">
         <h2>Most Popular</h2>
-        ${error}
     </div>
 
     <div class="row">
@@ -30,7 +29,8 @@
         <!-- Content -->
         <div class="col-xs-12 col-sm-6 col-md-8">
 
-            <form:form modelAttribute="programForm" encType="multipart/form-data" role="form" method="POST" cssClass="form">
+            <form:form modelAttribute="programForm" encType="multipart/form-data" role="form" method="POST"
+                       cssClass="form">
 
                 <div class="form-group">
                     <label for="name">Application name</label><br>
@@ -46,6 +46,7 @@
                 </div>
                 <div class="form-group">
                     <label for="file">File</label><br>
+                    <span>${fileError}</span>
                     <form:errors cssClass="bg-danger" path="file"/>
                     <input type="file" name="file" id="file">
                     <p class="help-block">* Maximum file size is 15MB</p>
