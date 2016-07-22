@@ -44,10 +44,10 @@ public class DefaultExceptionHandler {
                         LocaleContextHolder.getLocale());
                 flash.put("fileError", message);
             } else {
-                flash.put("error", "Please contact your administrator: /n" + ex.getMessage());
+                flash.put("error", messageSource.getMessage("hint.contact.admin", null, LocaleContextHolder.getLocale()) + ex.getMessage());
             }
         } else {
-            flash.put("error", "Please contact your administrator: /n" + ex.getMessage());
+            flash.put("error", messageSource.getMessage("hint.contact.admin", null, LocaleContextHolder.getLocale()) + ex.getMessage());
         }
         return model;
     }
@@ -56,7 +56,7 @@ public class DefaultExceptionHandler {
     public RedirectView handleIOException(Exception ex, HttpServletRequest request) {
         RedirectView model = new RedirectView(SUBMIT_PROGRAM_VIEW);
         FlashMap flash = RequestContextUtils.getOutputFlashMap(request);
-        flash.put("fileError", "Unable to read the file");
+        flash.put("fileError", messageSource.getMessage("error.file.io", null, LocaleContextHolder.getLocale()));
         return model;
     }
 
