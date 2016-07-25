@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -39,9 +40,9 @@ public class ProgramController {
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.GET)
-    private String getAddProgramForm(Model model) {
+    private String getAddProgramForm(Model model, HttpSession session) {
         model.addAttribute("programForm", new ProgramForm());
-        model.addAttribute("allCategories", categoryManager.getAllCategories());
+        session.setAttribute("allCategories", categoryManager.getAllCategories());
         LOG.debug("Getting program submit form");
         return PROGRAM_SUBMIT_PAGE;
     }

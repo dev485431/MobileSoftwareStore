@@ -42,9 +42,11 @@
                 <div class="form-group">
                     <label for="name">Category</label><br>
                     <form:errors cssClass="bg-danger" path="category"/>
-                    <c:forEach var="category" items="${allCategories}">
-                        <c:out value="${category}"/>
-                    </c:forEach>
+                    <form:select path="category">
+                        <c:forEach var="category" items="${allCategories}">
+                            <option value="${category.id}">${category.name}</option>
+                        </c:forEach>
+                    </form:select>
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label><br>
