@@ -19,6 +19,8 @@ public class ProgramFormValidator implements Validator {
     private static final Logger LOG = Logger.getLogger(ProgramFormValidator.class);
     @Autowired
     private ProgramManager programManager;
+    @Autowired
+    private ProgramFileValidator programFileValidator;
     @Value("${uploaded.file.max.size.bytes}")
     private Long uploadedFileMaxSizeBytes;
 
@@ -43,6 +45,9 @@ public class ProgramFormValidator implements Validator {
             if (programManager.programNameExists(programForm.getName())) {
                 LOG.debug("Program name already exists in the database");
                 errors.rejectValue("name", "error.program.name.exists");
+            }
+            if (!programFileValidator.isValidFile(programForm.getFile())) {
+                errors.rejectValue("file", "error.invalid.file");
             }
         }
     }

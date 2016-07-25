@@ -6,7 +6,6 @@ import com.dataart.softwarestore.model.domain.Statistics;
 import com.dataart.softwarestore.model.dto.ProgramForm;
 import com.dataart.softwarestore.service.CategoryManager;
 import com.dataart.softwarestore.service.ProgramManager;
-import com.dataart.softwarestore.validation.ProgramFileValidator;
 import com.dataart.softwarestore.validation.ProgramFormValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
@@ -36,8 +34,6 @@ public class ProgramController {
     private CategoryManager categoryManager;
     @Autowired
     private ProgramFormValidator programFormValidator;
-    @Autowired
-    private ProgramFileValidator programFileValidator;
 
     @InitBinder("programForm")
     private void initProgramFormValidation(WebDataBinder binder) {
@@ -53,8 +49,8 @@ public class ProgramController {
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
-    public String submitAddProgramForm(Model model, @ModelAttribute("programForm") @Valid ProgramForm programForm, BindingResult result, RedirectAttributes redirect) throws IOException {
-        if (result.hasErrors() || !programFileValidator.isValidFile(programForm.getFile())) {
+    public String submitAddProgramForm(Model model, @ModelAttribute("programForm") @Valid ProgramForm programForm, BindingResult result, RedirectAttributes redirect) {
+        if (result.hasErrors()) {
             return PROGRAM_SUBMIT_PAGE;
         }
 
