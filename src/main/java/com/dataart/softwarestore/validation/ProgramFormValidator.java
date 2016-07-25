@@ -10,11 +10,13 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.dataart.softwarestore.validation.ValidationConfig.ZERO;
+import static com.dataart.softwarestore.validation.ValidationConfig.ZIP_EXTENSION;
+
 @Component
 public class ProgramFormValidator implements Validator {
 
     private static final Logger LOG = Logger.getLogger(ProgramFormValidator.class);
-    private static final String ZIP_EXTENSION = ".zip";
     @Autowired
     private ProgramManager programManager;
     @Value("${uploaded.file.max.size.bytes}")
@@ -31,7 +33,7 @@ public class ProgramFormValidator implements Validator {
             ProgramForm programForm = (ProgramForm) target;
             MultipartFile programFile = ((ProgramForm) target).getFile();
 
-            if (programFile.getSize() == 0) {
+            if (programFile.getSize() == ZERO) {
                 LOG.debug("The file is empty");
                 errors.rejectValue("file", "error.empty.file");
             }

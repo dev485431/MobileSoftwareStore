@@ -34,6 +34,12 @@ public class HibernateCategoryManager implements CategoryManager {
         return getCategoryByName(categoryName) != null;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Category getCategoryById(Integer id) {
+        return (Category) session().createQuery("from Category where id=:id").setParameter("id", id).uniqueResult();
+    }
+
     private Category getCategoryByName(String categoryName) {
         return (Category) session().createQuery("from Category where name=:categoryName").setParameter("categoryName", categoryName).uniqueResult();
     }

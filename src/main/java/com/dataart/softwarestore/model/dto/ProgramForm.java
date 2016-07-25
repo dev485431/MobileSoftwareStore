@@ -18,8 +18,8 @@ public class ProgramForm {
     private String name;
 
     @NotNull(message = "{msg.null}")
-    @Digits(integer = LENGTH_CATEGORY_ID_MAX, fraction = LENGTH_ZERO)
-    private Integer category;
+    @Digits(integer = LENGTH_CATEGORY_ID_MAX, fraction = ZERO)
+    private Integer categoryId;
 
     private CommonsMultipartFile file;
 
@@ -36,12 +36,12 @@ public class ProgramForm {
         this.name = name;
     }
 
-    public Integer getCategory() {
-        return category;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Integer category) {
-        this.category = category;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     public CommonsMultipartFile getFile() {
@@ -64,7 +64,7 @@ public class ProgramForm {
     public String toString() {
         return "ProgramForm{" +
                 "name='" + name + '\'' +
-                ", category=" + category +
+                ", categoryId=" + categoryId +
                 ", file=" + file +
                 ", description='" + description + '\'' +
                 '}';

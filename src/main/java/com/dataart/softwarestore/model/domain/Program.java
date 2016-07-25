@@ -16,7 +16,7 @@ public class Program {
     private String filename;
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(nullable=false, columnDefinition="mediumblob")
+    @Column(nullable = false, columnDefinition = "mediumblob")
     private byte[] data;
 
     @OneToOne

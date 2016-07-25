@@ -10,5 +10,6 @@ public interface CategoryManager {
 
     boolean categoryExists(String categoryName);
 
+    Category getCategoryById(Integer id);
 
 }

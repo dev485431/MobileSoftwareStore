@@ -8,4 +8,8 @@ public interface ProgramManager {
 
     boolean programNameExists(String name);
 
+    Program getProgramById(Integer id);
+
+    void removeProgram(Integer id);
+
 }

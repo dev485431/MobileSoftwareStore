@@ -1,6 +1,8 @@
 package com.dataart.softwarestore.web;
 
+import com.dataart.softwarestore.model.domain.Category;
 import com.dataart.softwarestore.model.domain.Program;
+import com.dataart.softwarestore.model.domain.Statistics;
 import com.dataart.softwarestore.model.dto.ProgramForm;
 import com.dataart.softwarestore.service.CategoryManager;
 import com.dataart.softwarestore.service.ProgramManager;
@@ -11,14 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 
 @Controller
 public class ProgramController {
@@ -41,9 +42,9 @@ public class ProgramController {
 
     @RequestMapping(value = "/submit", method = RequestMethod.GET)
     private String getAddProgramForm(Model model, HttpSession session) {
+        LOG.debug("Getting program submit form");
         model.addAttribute("programForm", new ProgramForm());
         session.setAttribute("allCategories", categoryManager.getAllCategories());
-        LOG.debug("Getting program submit form");
         return PROGRAM_SUBMIT_PAGE;
     }
 
@@ -53,14 +54,24 @@ public class ProgramController {
             return PROGRAM_SUBMIT_PAGE;
         }
         LOG.debug("Adding new program: " + programForm.toString());
-        Program addedProgram = new Program();
-//        programManager.addProgram(new Program());
+        Category category = categoryManager.getCategoryById(programForm.getCategoryId());
+        Statistics statistics = new Statistics(LocalDateTime.now(), 0L);
+        // String name, String description, String filename, byte[] data, Category category, Statistics statistics, Map<Integer, Image> images
+        Program addedProgram = new Program(programForm.getName(), programForm.getDescription(), programForm.getFile().getOriginalFilename(),
+                programForm.getFile().getBytes(), category, statistics, new HashMap<>());
+        programManager.addProgram(addedProgram);
         return PROGRAM_SUBMIT_PAGE;
     }
 
     @RequestMapping(value = "/details", method = RequestMethod.GET)
     private String getProgramDetailsPage() {
         return PROGRAM_DETAILS_PAGE;
+    }
+
+    @RequestMapping(value = "/remove", method = RequestMethod.GET)
+    private String removeProgram(@RequestParam("id") Integer id) {
+        programManager.removeProgram(id);
+        return "/";
     }
 
 }

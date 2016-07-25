@@ -31,4 +31,17 @@ public class HibernateProgramManager implements ProgramManager {
         return count == 1;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Program getProgramById(Integer id) {
+        return (Program) session().createQuery("from Program where id=:id").setParameter("id", id).uniqueResult();
+    }
+
+    @Override
+    @Transactional
+    public void removeProgram(Integer id) {
+        Program program = getProgramById(id);
+        session().delete(program);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.dataart.softwarestore.model.domain;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -12,13 +13,13 @@ public class Statistics {
     private Integer id;
 
     @Column(name = "time_uploaded")
-    private Date timeUploaded;
+    private LocalDateTime timeUploaded;
     private Long downloads;
 
     public Statistics() {
     }
 
-    public Statistics(Date timeUploaded, Long downloads) {
+    public Statistics(LocalDateTime timeUploaded, Long downloads) {
         this.timeUploaded = timeUploaded;
         this.downloads = downloads;
     }
@@ -31,11 +32,11 @@ public class Statistics {
         this.id = id;
     }
 
-    public Date getTimeUploaded() {
+    public LocalDateTime getTimeUploaded() {
         return timeUploaded;
     }
 
-    public void setTimeUploaded(Date timeUploaded) {
+    public void setTimeUploaded(LocalDateTime timeUploaded) {
         this.timeUploaded = timeUploaded;
     }
 
