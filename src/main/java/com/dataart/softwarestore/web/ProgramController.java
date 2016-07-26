@@ -9,6 +9,7 @@ import com.dataart.softwarestore.service.ProgramManager;
 import com.dataart.softwarestore.validation.ProgramFormValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,13 +28,21 @@ public class ProgramController {
     private static final Logger LOG = Logger.getLogger(ProgramController.class);
     private static final String PROGRAM_SUBMIT_PAGE = "submit";
     private static final String PROGRAM_DETAILS_PAGE = "details";
+    private static final Long INITIAL_DOWNLOADS = 0L;
+    private static final int SIZE_DIVIDER = 1024;
+
+    private ProgramManager programManager;
+    private CategoryManager categoryManager;
+    private ProgramFormValidator programFormValidator;
+    @Value("${uploaded.file.max.size.bytes}")
+    private Long uploadedFileMaxSizeBytes;
 
     @Autowired
-    private ProgramManager programManager;
-    @Autowired
-    private CategoryManager categoryManager;
-    @Autowired
-    private ProgramFormValidator programFormValidator;
+    public ProgramController(ProgramManager programManager, CategoryManager categoryManager, ProgramFormValidator programFormValidator) {
+        this.programManager = programManager;
+        this.categoryManager = categoryManager;
+        this.programFormValidator = programFormValidator;
+    }
 
     @InitBinder("programForm")
     private void initProgramFormValidation(WebDataBinder binder) {
@@ -45,19 +54,23 @@ public class ProgramController {
         LOG.debug("Getting program submit form");
         model.addAttribute("programForm", new ProgramForm());
         model.addAttribute("allCategories", categoryManager.getAllCategories());
+        model.addAttribute("maxFileSizeKb", uploadedFileMaxSizeBytes / SIZE_DIVIDER);
         return PROGRAM_SUBMIT_PAGE;
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     public String submitAddProgramForm(Model model, @ModelAttribute("programForm") @Valid ProgramForm programForm, BindingResult result, RedirectAttributes redirect) {
         model.addAttribute("allCategories", categoryManager.getAllCategories());
+        model.addAttribute("maxFileSizeKb", uploadedFileMaxSizeBytes / SIZE_DIVIDER);
         if (result.hasErrors()) {
             return PROGRAM_SUBMIT_PAGE;
         }
 
+        // INTERACTION WITH ZIP FILE CONTENT NEEDED
+
         LOG.debug("Adding new program: " + programForm.toString());
         Category category = categoryManager.getCategoryById(programForm.getCategoryId());
-        Statistics statistics = new Statistics(LocalDateTime.now(), 0L);
+        Statistics statistics = new Statistics(LocalDateTime.now(), INITIAL_DOWNLOADS);
         // String name, String description, String filename, byte[] data, Category category, Statistics statistics, Map<Integer, Image> images
         Program addedProgram = new Program(programForm.getName(), programForm.getDescription(), programForm.getFile().getOriginalFilename(),
                 programForm.getFile().getBytes(), category, statistics, new HashMap<>());

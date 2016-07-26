@@ -57,14 +57,16 @@
                 </div>
                 <div class="form-group">
                     <label for="file">File</label><br>
-                    <span class="bg-danger">${fileError}</span>
                     <form:errors cssClass="bg-danger" path="file"/>
                     <input type="file" name="file" id="file">
-                    <p class="help-block">* Maximum file size is 15MB</p>
                 </div>
                 <button type="submit" class="btn btn-default">Submit</button>
             </form:form>
-
+            <small class="text-muted">* Maximum program file size is ${maxFileSizeKb} Kb</small></br>
+            <small class="text-muted">** The program file must be a zip file.It cannot be empty.</br>
+                It must contain only the following files in the main zip file folder: app.apk, info.txt, 128x128.jpg,
+                512x512.jpg
+            </small>
 
         </div>
     </div>
