@@ -24,12 +24,14 @@ public class ProgramFileValidator {
         return containsExpectedNumberOfFiles(filenames) ? (containsExpectedFiles(filenames) ? true : false) : false;
     }
 
-    public List<String> getFilenames(CommonsMultipartFile file) {
+    private List<String> getFilenames(CommonsMultipartFile file) {
         List<String> filenames = new LinkedList<>();
-        try (ZipInputStream zis = new ZipInputStream(file.getInputStream())) {
-            ZipEntry ze;
-            while ((ze = zis.getNextEntry()) != null) {
-                filenames.add(ze.getName());
+        try (ZipInputStream zipStream = new ZipInputStream(file.getInputStream())) {
+            ZipEntry zipEntry;
+            int entryCounter = 0;
+            while ((zipEntry = zipStream.getNextEntry()) != null && entryCounter <= zipExpectedFiles.size()) {
+                filenames.add(zipEntry.getName());
+                entryCounter++;
             }
         } catch (IOException e) {
             LOG.error("Error reading zip file: " + e.getMessage());

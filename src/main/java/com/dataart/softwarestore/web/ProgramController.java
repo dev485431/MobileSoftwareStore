@@ -44,12 +44,13 @@ public class ProgramController {
     public String getAddProgramForm(Model model, HttpSession session) {
         LOG.debug("Getting program submit form");
         model.addAttribute("programForm", new ProgramForm());
-        session.setAttribute("allCategories", categoryManager.getAllCategories());
+        model.addAttribute("allCategories", categoryManager.getAllCategories());
         return PROGRAM_SUBMIT_PAGE;
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     public String submitAddProgramForm(Model model, @ModelAttribute("programForm") @Valid ProgramForm programForm, BindingResult result, RedirectAttributes redirect) {
+        model.addAttribute("allCategories", categoryManager.getAllCategories());
         if (result.hasErrors()) {
             return PROGRAM_SUBMIT_PAGE;
         }

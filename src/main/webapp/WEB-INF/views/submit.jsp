@@ -19,7 +19,8 @@
 
     <div class="row">
         <h2>Most Popular</h2>
-        <span>${error}</span>
+        <span class="bg-danger">${errorMessage}</span>
+        <span class="bg-success">${successMessage}</span>
     </div>
 
     <div class="row">
