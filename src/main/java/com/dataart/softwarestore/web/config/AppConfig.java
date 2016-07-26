@@ -55,4 +55,5 @@ public class AppConfig {
         txManager.setSessionFactory(sessionFactory);
         return txManager;
     }
+
 }
