@@ -19,8 +19,6 @@
 
     <div class="row">
         <h2>Most Popular</h2>
-        <span class="bg-danger">${errorMessage}</span>
-        <span class="bg-success">${successMessage}</span>
     </div>
 
     <div class="row">
@@ -30,6 +28,10 @@
         </div>
         <!-- Content -->
         <div class="col-xs-12 col-sm-6 col-md-8">
+            <div class="row">
+                <span class="bg-danger">${errorMessage}</span>
+                <span class="bg-success">${successMessage}</span>
+            </div></br>
 
             <form:form modelAttribute="programForm" encType="multipart/form-data" role="form" method="POST"
                        cssClass="form">
@@ -62,7 +64,8 @@
                 </div>
                 <button type="submit" class="btn btn-default">Submit</button>
             </form:form>
-            <small class="text-muted">* Maximum program file size is ${maxFileSizeKb} Kb</small></br>
+            <small class="text-muted">* Maximum program file size is ${maxFileSizeKb} Kb</small>
+            </br>
             <small class="text-muted">** The program file must be a zip file.It cannot be empty.</br>
                 It must contain only the following files in the main zip file folder: app.apk, info.txt, 128x128.jpg,
                 512x512.jpg
