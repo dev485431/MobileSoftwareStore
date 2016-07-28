@@ -6,8 +6,10 @@ import com.dataart.softwarestore.model.domain.Statistics;
 import com.dataart.softwarestore.model.dto.ProgramForm;
 import com.dataart.softwarestore.service.CategoryManager;
 import com.dataart.softwarestore.service.ProgramManager;
-import com.dataart.softwarestore.utils.ZipFileHandler;
+import com.dataart.softwarestore.utils.FtpTransferHandler;
+import com.dataart.softwarestore.utils.UploadedFileHandler;
 import com.dataart.softwarestore.validation.ProgramFormValidator;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 public class ProgramController {
@@ -44,20 +47,22 @@ public class ProgramController {
     private ProgramManager programManager;
     private CategoryManager categoryManager;
     private ProgramFormValidator programFormValidator;
-    private ZipFileHandler zipFileHandler;
+    private UploadedFileHandler uploadedFileHandler;
+    private FtpTransferHandler ftpTransferHandler;
     @Value("${uploaded.file.max.size.bytes}")
     private Long uploadedFileMaxSizeBytes;
 
 
     @Autowired
     public ProgramController(HttpServletRequest servletRequest, MessageSourceAccessor websiteMessages, ProgramManager programManager,
-                             CategoryManager categoryManager, ProgramFormValidator programFormValidator, ZipFileHandler zipFileHandler) {
+                             CategoryManager categoryManager, ProgramFormValidator programFormValidator, UploadedFileHandler uploadedFileHandler, FtpTransferHandler ftpTransferHandler) {
         this.servletRequest = servletRequest;
         this.websiteMessages = websiteMessages;
         this.programManager = programManager;
         this.categoryManager = categoryManager;
         this.programFormValidator = programFormValidator;
-        this.zipFileHandler = zipFileHandler;
+        this.uploadedFileHandler = uploadedFileHandler;
+        this.ftpTransferHandler = ftpTransferHandler;
     }
 
     @InitBinder("programForm")
@@ -82,22 +87,20 @@ public class ProgramController {
             return PROGRAM_SUBMIT_PAGE;
         }
 
-        // upload file to temp dir
         CommonsMultipartFile formZipFile = programForm.getFile();
-        String targetPath = servletRequest.getSession().getServletContext().getRealPath(TEMP_UPLOAD_DIR);
-        File uploadedFile = null;
+        String uploadPath = servletRequest.getSession().getServletContext().getRealPath(TEMP_UPLOAD_DIR);
         try {
-            uploadedFile = zipFileHandler.transferFileToDir(formZipFile, targetPath);
+            File uploadedZipFile = uploadedFileHandler.transferFileToDir(formZipFile, uploadPath);
+            File extractPath = new File(FilenameUtils.removeExtension(uploadedZipFile.getAbsolutePath()));
+            List<File> extractedFiles = uploadedFileHandler.extractZipFile(uploadedZipFile, extractPath);
+            ftpTransferHandler.uploadFiles(extractedFiles);
+            uploadedFileHandler.removeFile(uploadedZipFile);
+            uploadedFileHandler.removeDir(extractPath);
         } catch (IOException e) {
-            LOG.error("Unable to transfer program file to temp upload dir: " + e.getMessage());
+            LOG.error("Error during processing zip file: " + e.getMessage());
+            redirect.addFlashAttribute("errorMessage", websiteMessages.getMessage("error.processing.zip"));
+            return REDIRECT_TO_SUBMIT_PAGE;
         }
-
-        // extract file to temp dir
-//        try {
-//            zipFileHandler.extractZipFile(uploadedFile);
-//        } catch (IOException e) {
-//            LOG.error("Unable to extract program zip file: " + e.getMessage());
-//        }
 
         LOG.debug("Adding new program: " + programForm.toString());
         Category category = categoryManager.getCategoryById(programForm.getCategoryId());

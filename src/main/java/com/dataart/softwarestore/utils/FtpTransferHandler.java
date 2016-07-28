@@ -23,16 +23,23 @@ public class FtpTransferHandler {
     private String ftpPass;
     @Value("${ftp.upload.dir.path}")
     private String uploadDirPath;
-    
-    public void uploadFiles(List<File> files, String sourcePath) throws IOException {
+
+    public void uploadFiles(List<File> files) throws IOException {
         FTPClient ftp = new FTPClient();
         ftp.connect(ftpHost);
-        ftp.login(ftpUser, ftpPass);
-        ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+        ftp.enterLocalPassiveMode();
 
+        if (!ftp.login(ftpUser, ftpPass)) {
+            LOG.error("Failed to log in: " + ftp.getReplyString());
+        }
+
+        ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
         for (File file : files) {
+            LOG.debug("Transferring file by ftp: " + file);
             InputStream in = new FileInputStream(file);
-            ftp.storeFile(file.getName(), in);
+            if (!ftp.storeFile(uploadDirPath + file.getName(), in)) {
+                LOG.error("Ftp file transfer failed: " + ftp.getReplyString());
+            }
             in.close();
         }
         ftp.disconnect();
