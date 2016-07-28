@@ -38,7 +38,7 @@ public class ProgramController {
     private static final String PROGRAM_SUBMIT_PAGE = "submit";
     private static final String PROGRAM_DETAILS_PAGE = "details";
     private static final String REDIRECT_TO_SUBMIT_PAGE = "redirect:/submit";
-    private static final String TEMP_UPLOAD_DIR = "/temp_uploads/";
+    private static final String MAIN_UPLOAD_DIR = "/temp_uploads/";
     private static final Long INITIAL_DOWNLOADS = 0L;
     private static final int FILE_SIZE_DIVIDER = 1024;
 
@@ -88,9 +88,9 @@ public class ProgramController {
         }
 
         CommonsMultipartFile formZipFile = programForm.getFile();
-        String uploadPath = servletRequest.getSession().getServletContext().getRealPath(TEMP_UPLOAD_DIR);
+        File mainUploadDir = new File(servletRequest.getSession().getServletContext().getRealPath(MAIN_UPLOAD_DIR));
         try {
-            File uploadedZipFile = uploadedFileHandler.transferFileToDir(formZipFile, uploadPath);
+            File uploadedZipFile = uploadedFileHandler.transferFileToDir(formZipFile, mainUploadDir);
             File extractPath = new File(FilenameUtils.removeExtension(uploadedZipFile.getAbsolutePath()));
             List<File> extractedFiles = uploadedFileHandler.extractZipFile(uploadedZipFile, extractPath);
             ftpTransferHandler.uploadFiles(extractedFiles);

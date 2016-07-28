@@ -18,9 +18,9 @@ public class UploadedFileHandler {
 
     private static final Logger LOG = Logger.getLogger(UploadedFileHandler.class);
 
-    public File transferFileToDir(CommonsMultipartFile sourceFile, String targetDir) throws IOException {
-        if (!new File(targetDir).exists()) new File(targetDir).mkdir();
-        File targetFile = new File(targetDir + "/" + sourceFile.getOriginalFilename());
+    public File transferFileToDir(CommonsMultipartFile sourceFile, File targetDir) throws IOException {
+        if (!targetDir.exists()) targetDir.mkdir();
+        File targetFile = new File(targetDir, sourceFile.getOriginalFilename());
         LOG.debug("Transferring program file to: " + targetFile.getAbsolutePath());
         sourceFile.transferTo(targetFile);
         return targetFile;
