@@ -5,21 +5,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 @Component
-public class ProgramFileValidator {
+public class BeforeUploadFileValidator {
 
-    private static final Logger LOG = Logger.getLogger(ProgramFileValidator.class);
+    private static final Logger LOG = Logger.getLogger(AfterUploadFilesValidator.class);
 
     @Value("#{'${program.zip.expected.files}'.split(',')}")
     private List<String> zipExpectedFiles;
 
-    public boolean isValidFile(CommonsMultipartFile file) {
+    public boolean containsExpectedFiles(CommonsMultipartFile file) {
         List<String> filenames = getFilenames(file);
         return containsExpectedNumberOfFiles(filenames) ? (containsExpectedFiles(filenames) ? true : false) : false;
     }

@@ -14,9 +14,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 @Component
-public class UploadedFileHandler {
+public class ProgramZipFileHandler {
 
-    private static final Logger LOG = Logger.getLogger(UploadedFileHandler.class);
+    private static final Logger LOG = Logger.getLogger(ProgramZipFileHandler.class);
 
     public File transferFileToDir(CommonsMultipartFile sourceFile, File targetDir) throws IOException {
         if (!targetDir.exists()) targetDir.mkdir();
@@ -54,12 +54,17 @@ public class UploadedFileHandler {
         return extractedEntries;
     }
 
-    public void removeFile(File file) throws IOException {
-        FileUtils.forceDelete(file);
-    }
-
-    public void removeDir(File directory) throws IOException {
-        FileUtils.deleteDirectory(directory);
+    public void removeFiles(File... files) {
+        for (File file : files) {
+            if (file.exists()) {
+                LOG.debug("Removing files: " + file.getAbsolutePath());
+                try {
+                    FileUtils.forceDelete(file);
+                } catch (IOException e) {
+                    LOG.error("Unable to remove files: " + file.getAbsolutePath() + ", Error msg: " + e.getMessage());
+                }
+            }
+        }
     }
 
 }

@@ -29,9 +29,18 @@
         <!-- Content -->
         <div class="col-xs-12 col-sm-6 col-md-8">
             <div class="row">
-                <span class="bg-danger">${errorMessage}</span>
-                <span class="bg-success">${successMessage}</span>
-            </div></br>
+                <c:if test="${not empty successMessage}">
+                    <div class="alert alert-success">
+                        <span class="bg-success">${successMessage}</span>
+                    </div>
+                </c:if>
+                <c:if test="${not empty errorMessage}">
+                    <div class="alert alert-danger">
+                        <span class="bg-danger">${errorMessage}</span>
+                    </div>
+                </c:if>
+            </div>
+            </br>
 
             <form:form modelAttribute="programForm" encType="multipart/form-data" role="form" method="POST"
                        cssClass="form">

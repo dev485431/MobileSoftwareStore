@@ -20,7 +20,7 @@ public class ProgramFormValidator implements Validator {
     @Autowired
     private ProgramManager programManager;
     @Autowired
-    private ProgramFileValidator programFileValidator;
+    private BeforeUploadFileValidator beforeUploadFileValidator;
     @Value("${uploaded.file.max.size.bytes}")
     private Long uploadedFileMaxSizeBytes;
 
@@ -46,7 +46,7 @@ public class ProgramFormValidator implements Validator {
                 LOG.debug("Program name already exists in the database");
                 errors.rejectValue("name", "error.program.name.exists");
             }
-            if (!programFileValidator.isValidFile(programForm.getFile())) {
+            if (!beforeUploadFileValidator.containsExpectedFiles(programForm.getFile())) {
                 errors.rejectValue("file", "error.invalid.file");
             }
         }
