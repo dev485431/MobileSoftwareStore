@@ -103,6 +103,7 @@ public class ProgramController {
             redirect.addFlashAttribute("errorMessage", websiteMessages.getMessage("error.processing.zip"));
             return REDIRECT_TO_SUBMIT_PAGE;
         } finally {
+            LOG.debug("Attempting to remove temporary files");
             programZipFileHandler.removeFiles(uploadedZipFile, extractPath);
         }
 
