@@ -111,7 +111,7 @@ public class ProgramController {
 
             ProgramTextDetails programTextDetails = programInfoHandler.getProgramTextDetails(extractedFiles.get(zipInnerTxtInfoFile));
             if (!programTextDetailsValidator.isValid(programTextDetails)) {
-                LOG.debug("Zip inner txt file has wrong format");
+                LOG.debug("Zip inner txt file has wrong format or is missing required fields");
                 redirect.addFlashAttribute("errorMessage", websiteMessages.getMessage("error.zip.txt.file.format"));
                 return REDIRECT_TO_SUBMIT_PAGE;
             }
