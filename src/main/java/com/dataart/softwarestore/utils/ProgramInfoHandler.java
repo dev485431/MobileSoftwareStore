@@ -1,6 +1,7 @@
 package com.dataart.softwarestore.utils;
 
 import com.dataart.softwarestore.model.dto.ProgramTextDetails;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -13,16 +14,20 @@ import java.util.Properties;
 @Component
 public class ProgramInfoHandler {
 
-    private static final String KEY_NAME = "name";
-    private static final String KEY_PACKAGE = "package";
-    private static final String KEY_PICTURE_128 = "picture_128";
-    private static final String KEY_PICTURE_512 = "picture_512";
+    @Value("${program.zip.txt.key.name}")
+    private String txtNameKey;
+    @Value("${program.zip.txt.key.package}")
+    private String txtPackageKey;
+    @Value("${program.zip.txt.key.picture_128}")
+    private String txtPicture128Key;
+    @Value("${program.zip.txt.key.picture_512}")
+    private String txtPicture512Key;
 
 
     public ProgramTextDetails getProgramTextDetails(File programTextFile) throws IOException {
         Properties prop = loadProgramProperties(programTextFile);
-        return new ProgramTextDetails(Optional.ofNullable(prop.getProperty(KEY_NAME)), Optional.ofNullable(prop.getProperty(KEY_PACKAGE)),
-                Optional.ofNullable(prop.getProperty(KEY_PICTURE_128)), Optional.ofNullable(prop.getProperty(KEY_PICTURE_512)));
+        return new ProgramTextDetails(Optional.ofNullable(prop.getProperty(txtNameKey)), Optional.ofNullable(prop.getProperty(txtPackageKey)),
+                Optional.ofNullable(prop.getProperty(txtPicture128Key)), Optional.ofNullable(prop.getProperty(txtPicture512Key)));
     }
 
     private Properties loadProgramProperties(File programTextFile) throws IOException {

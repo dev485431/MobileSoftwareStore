@@ -19,7 +19,7 @@ public class Program {
     @Column(nullable = false, columnDefinition = "mediumblob")
     private byte[] data;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
