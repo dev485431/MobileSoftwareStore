@@ -3,12 +3,15 @@ package com.dataart.softwarestore.web;
 import com.dataart.softwarestore.model.domain.Category;
 import com.dataart.softwarestore.model.domain.Statistics;
 import com.dataart.softwarestore.model.dto.ProgramForm;
+import com.dataart.softwarestore.model.dto.ProgramTextDetails;
 import com.dataart.softwarestore.service.CategoryManager;
 import com.dataart.softwarestore.service.ProgramManager;
 import com.dataart.softwarestore.utils.FtpTransferHandler;
+import com.dataart.softwarestore.utils.ProgramInfoHandler;
 import com.dataart.softwarestore.utils.ProgramZipFileHandler;
 import com.dataart.softwarestore.validation.AfterUploadFilesValidator;
 import com.dataart.softwarestore.validation.ProgramFormValidator;
+import com.dataart.softwarestore.validation.ProgramTextDetailsValidator;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +29,7 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ProgramController {
@@ -46,15 +49,20 @@ public class ProgramController {
     private ProgramFormValidator programFormValidator;
     private AfterUploadFilesValidator afterUploadFilesValidator;
     private ProgramZipFileHandler programZipFileHandler;
+    private ProgramInfoHandler programInfoHandler;
+    private ProgramTextDetailsValidator programTextDetailsValidator;
     private FtpTransferHandler ftpTransferHandler;
     @Value("${uploaded.file.max.size.bytes}")
     private Long uploadedFileMaxSizeBytes;
+    @Value("${program.zip.inner.txt.info.file}")
+    private String zipInnerTxtInfoFile;
 
 
     @Autowired
     public ProgramController(HttpServletRequest servletRequest, MessageSourceAccessor websiteMessages, ProgramManager programManager,
                              CategoryManager categoryManager, ProgramFormValidator programFormValidator, AfterUploadFilesValidator afterUploadFilesValidator,
-                             ProgramZipFileHandler programZipFileHandler, FtpTransferHandler ftpTransferHandler) {
+                             ProgramZipFileHandler programZipFileHandler, ProgramInfoHandler programInfoHandler, ProgramTextDetailsValidator programTextDetailsValidator,
+                             FtpTransferHandler ftpTransferHandler) {
         this.servletRequest = servletRequest;
         this.websiteMessages = websiteMessages;
         this.programManager = programManager;
@@ -62,6 +70,8 @@ public class ProgramController {
         this.programFormValidator = programFormValidator;
         this.afterUploadFilesValidator = afterUploadFilesValidator;
         this.programZipFileHandler = programZipFileHandler;
+        this.programInfoHandler = programInfoHandler;
+        this.programTextDetailsValidator = programTextDetailsValidator;
         this.ftpTransferHandler = ftpTransferHandler;
     }
 
@@ -91,12 +101,20 @@ public class ProgramController {
             File mainUploadDir = new File(servletRequest.getSession().getServletContext().getRealPath(MAIN_UPLOAD_DIR));
             uploadedZipFile = programZipFileHandler.transferFileToDir(programForm.getFile(), mainUploadDir);
             extractPath = new File(FilenameUtils.removeExtension(uploadedZipFile.getAbsolutePath()));
-            List<File> extractedFiles = programZipFileHandler.extractZipFile(uploadedZipFile, extractPath);
+            Map<String, File> extractedFiles = programZipFileHandler.extractZipFile(uploadedZipFile, extractPath);
             if (afterUploadFilesValidator.areThereEmptyFiles(extractedFiles)) {
                 LOG.debug("Some extracted files are empty");
                 redirect.addFlashAttribute("errorMessage", websiteMessages.getMessage("error.contains.empty.files"));
                 return REDIRECT_TO_SUBMIT_PAGE;
             }
+            // check contents of text file
+            ProgramTextDetails programTextDetails = programInfoHandler.getProgramTextDetails(extractedFiles.get(zipInnerTxtInfoFile));
+            if (!programTextDetailsValidator.isValid(programTextDetails)) {
+                LOG.debug("Zip inner txt file has wrong format");
+                redirect.addFlashAttribute("errorMessage", websiteMessages.getMessage("error.zip.txt.file.format"));
+                return REDIRECT_TO_SUBMIT_PAGE;
+            }
+
             String targetUploadDir = programForm.getName();
             ftpTransferHandler.uploadFiles(extractedFiles, targetUploadDir);
         } catch (IOException e) {
@@ -105,7 +123,7 @@ public class ProgramController {
             return REDIRECT_TO_SUBMIT_PAGE;
         } finally {
             LOG.debug("Attempting to remove temporary files");
-            programZipFileHandler.removeFiles(uploadedZipFile, extractPath);
+            programZipFileHandler.batchRemoveFiles(uploadedZipFile, extractPath);
         }
 
         LOG.debug("Adding new program: " + programForm.toString());

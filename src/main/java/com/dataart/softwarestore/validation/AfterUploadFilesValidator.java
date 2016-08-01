@@ -1,23 +1,21 @@
 package com.dataart.softwarestore.validation;
 
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 @Component
 public class AfterUploadFilesValidator {
 
-    private static final Logger LOG = Logger.getLogger(AfterUploadFilesValidator.class);
+    public boolean areThereEmptyFiles(Map<String, File> files) throws IOException {
+        for (Map.Entry<String, File> file : files.entrySet()) {
 
-    public boolean areThereEmptyFiles(List<File> files) throws IOException {
-        for (File file : files) {
             FileInputStream fis = null;
             try {
-                fis = new FileInputStream(file.getAbsolutePath());
+                fis = new FileInputStream(file.getValue().getAbsolutePath());
                 if (fis.available() == 0) {
                     return true;
                 }
@@ -27,6 +25,5 @@ public class AfterUploadFilesValidator {
         }
         return false;
     }
-
 
 }

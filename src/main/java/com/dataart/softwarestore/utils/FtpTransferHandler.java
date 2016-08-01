@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
+import java.util.Map;
 
 @Component
 public class FtpTransferHandler {
@@ -25,7 +25,7 @@ public class FtpTransferHandler {
     @Value("${ftp.main.upload.dir.path}")
     private String mainUploadDirPath;
 
-    public void uploadFiles(List<File> files, String targetUploadDir) throws IOException {
+    public void uploadFiles(Map<String, File> files, String targetUploadDir) throws IOException {
         FTPClient ftp = new FTPClient();
         ftp.connect(ftpHost);
         ftp.enterLocalPassiveMode();
@@ -44,10 +44,10 @@ public class FtpTransferHandler {
             LOG.debug("Directory created: " + targetUploadPath);
         }
 
-        for (File file : files) {
+        for (Map.Entry<String, File> file : files.entrySet()) {
             LOG.debug("Transferring file by ftp: " + file);
-            InputStream in = new FileInputStream(file);
-            if (!ftp.storeFile(targetUploadPath + "/" + file.getName(), in)) {
+            InputStream in = new FileInputStream(file.getValue());
+            if (!ftp.storeFile(targetUploadPath + "/" + file.getValue().getName(), in)) {
                 LOG.error("Ftp file transfer failed: " + ftp.getReplyString());
             }
             in.close();

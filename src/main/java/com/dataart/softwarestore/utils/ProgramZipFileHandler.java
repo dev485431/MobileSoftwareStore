@@ -7,9 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
-import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -26,16 +24,16 @@ public class ProgramZipFileHandler {
         return targetFile;
     }
 
-    public List<File> extractZipFile(File file, File extractPath) throws IOException {
+    public Map<String, File> extractZipFile(File file, File extractPath) throws IOException {
         ZipFile zipFile = new ZipFile(file);
-        List<File> extractedEntries = new LinkedList<>();
+        Map<String, File> extractedEntries = new HashMap<>();
 
         try {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
                 File entryDestination = new File(extractPath, entry.getName());
-                extractedEntries.add(entryDestination);
+                extractedEntries.put(entry.getName(), entryDestination);
 
                 if (entry.isDirectory()) {
                     entryDestination.mkdirs();
@@ -54,7 +52,7 @@ public class ProgramZipFileHandler {
         return extractedEntries;
     }
 
-    public void removeFiles(File... files) {
+    public void batchRemoveFiles(File... files) {
         for (File file : files) {
             if (file.exists()) {
                 LOG.debug("Removing file or dir: " + file.getAbsolutePath());
