@@ -15,16 +15,17 @@ import java.util.List;
 public class FtpTransferHandler {
 
     private static final Logger LOG = Logger.getLogger(FtpTransferHandler.class);
+    private static final int FTP_CODE_FILE_UNAVAILABLE = 550;
     @Value("${ftp.host}")
     private String ftpHost;
     @Value("${ftp.user}")
     private String ftpUser;
     @Value("${ftp.password}")
     private String ftpPass;
-    @Value("${ftp.upload.dir.path}")
-    private String uploadDirPath;
+    @Value("${ftp.main.upload.dir.path}")
+    private String mainUploadDirPath;
 
-    public void uploadFiles(List<File> files) throws IOException {
+    public void uploadFiles(List<File> files, String targetUploadDir) throws IOException {
         FTPClient ftp = new FTPClient();
         ftp.connect(ftpHost);
         ftp.enterLocalPassiveMode();
@@ -34,14 +35,28 @@ public class FtpTransferHandler {
         }
 
         ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+        String targetUploadPath = mainUploadDirPath + "/" + targetUploadDir;
+
+        if (!checkDirectoryExists(ftp, targetUploadPath)) {
+            if (!ftp.makeDirectory(targetUploadPath)) {
+                LOG.error("Failed to create directory: " + targetUploadPath + ", error: " + ftp.getReplyString());
+            }
+            LOG.debug("Directory created: " + targetUploadPath);
+        }
+
         for (File file : files) {
             LOG.debug("Transferring file by ftp: " + file);
             InputStream in = new FileInputStream(file);
-            if (!ftp.storeFile(uploadDirPath + file.getName(), in)) {
+            if (!ftp.storeFile(targetUploadPath + "/" + file.getName(), in)) {
                 LOG.error("Ftp file transfer failed: " + ftp.getReplyString());
             }
             in.close();
         }
         ftp.disconnect();
+    }
+
+    boolean checkDirectoryExists(FTPClient ftp, String dirPath) throws IOException {
+        ftp.changeWorkingDirectory(dirPath);
+        return ftp.getReplyCode() == FTP_CODE_FILE_UNAVAILABLE ? false : true;
     }
 }

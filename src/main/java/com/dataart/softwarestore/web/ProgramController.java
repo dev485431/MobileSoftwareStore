@@ -97,7 +97,8 @@ public class ProgramController {
                 redirect.addFlashAttribute("errorMessage", websiteMessages.getMessage("error.contains.empty.files"));
                 return REDIRECT_TO_SUBMIT_PAGE;
             }
-            ftpTransferHandler.uploadFiles(extractedFiles);
+            String targetUploadDir = programForm.getName();
+            ftpTransferHandler.uploadFiles(extractedFiles, targetUploadDir);
         } catch (IOException e) {
             LOG.error("Error during processing zip file: " + e.getMessage());
             redirect.addFlashAttribute("errorMessage", websiteMessages.getMessage("error.processing.zip"));
