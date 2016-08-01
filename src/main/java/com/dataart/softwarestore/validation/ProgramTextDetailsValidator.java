@@ -9,6 +9,10 @@ import java.io.IOException;
 public class ProgramTextDetailsValidator {
 
     public boolean isValid(ProgramTextDetails programTextDetails) throws IOException {
-        return programTextDetails.getProgramName().isPresent() ? true : false;
+        if (programTextDetails.getProgramName().isPresent() && !programTextDetails.getProgramName().get().isEmpty()
+                && programTextDetails.getPackageName().isPresent() && !programTextDetails.getPackageName().get().isEmpty()) {
+            return true;
+        }
+        return false;
     }
 }

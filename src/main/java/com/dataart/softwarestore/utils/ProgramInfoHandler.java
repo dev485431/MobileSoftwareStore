@@ -14,13 +14,15 @@ import java.util.Properties;
 public class ProgramInfoHandler {
 
     private static final String KEY_NAME = "name";
+    private static final String KEY_PACKAGE = "package";
     private static final String KEY_PICTURE_128 = "picture_128";
     private static final String KEY_PICTURE_512 = "picture_512";
 
 
     public ProgramTextDetails getProgramTextDetails(File programTextFile) throws IOException {
         Properties prop = loadProgramProperties(programTextFile);
-        return new ProgramTextDetails(Optional.ofNullable(prop.getProperty(KEY_NAME)), Optional.ofNullable(prop.getProperty(KEY_PICTURE_128)), Optional.ofNullable(prop.getProperty(KEY_PICTURE_512)));
+        return new ProgramTextDetails(Optional.ofNullable(prop.getProperty(KEY_NAME)), Optional.ofNullable(prop.getProperty(KEY_PACKAGE)),
+                Optional.ofNullable(prop.getProperty(KEY_PICTURE_128)), Optional.ofNullable(prop.getProperty(KEY_PICTURE_512)));
     }
 
     private Properties loadProgramProperties(File programTextFile) throws IOException {

@@ -38,7 +38,6 @@ public class ProgramController {
     private static final String PROGRAM_SUBMIT_PAGE = "submit";
     private static final String PROGRAM_DETAILS_PAGE = "details";
     private static final String REDIRECT_TO_SUBMIT_PAGE = "redirect:/submit";
-    private static final String MAIN_UPLOAD_DIR = "/temp_uploads/";
     private static final Long INITIAL_DOWNLOADS = 0L;
     private static final int FILE_SIZE_DIVIDER = 1024;
 
@@ -54,6 +53,8 @@ public class ProgramController {
     private FtpTransferHandler ftpTransferHandler;
     @Value("${uploaded.file.max.size.bytes}")
     private Long uploadedFileMaxSizeBytes;
+    @Value("${temp.upload.dir}")
+    private String tempUploadDir;
     @Value("${program.zip.inner.txt.info.file}")
     private String zipInnerTxtInfoFile;
 
@@ -98,7 +99,7 @@ public class ProgramController {
         File uploadedZipFile = null;
         File extractPath = null;
         try {
-            File mainUploadDir = new File(servletRequest.getSession().getServletContext().getRealPath(MAIN_UPLOAD_DIR));
+            File mainUploadDir = new File(servletRequest.getSession().getServletContext().getRealPath(tempUploadDir));
             uploadedZipFile = programZipFileHandler.transferFileToDir(programForm.getFile(), mainUploadDir);
             extractPath = new File(FilenameUtils.removeExtension(uploadedZipFile.getAbsolutePath()));
             Map<String, File> extractedFiles = programZipFileHandler.extractZipFile(uploadedZipFile, extractPath);
@@ -107,7 +108,7 @@ public class ProgramController {
                 redirect.addFlashAttribute("errorMessage", websiteMessages.getMessage("error.contains.empty.files"));
                 return REDIRECT_TO_SUBMIT_PAGE;
             }
-            // check contents of text file
+
             ProgramTextDetails programTextDetails = programInfoHandler.getProgramTextDetails(extractedFiles.get(zipInnerTxtInfoFile));
             if (!programTextDetailsValidator.isValid(programTextDetails)) {
                 LOG.debug("Zip inner txt file has wrong format");
