@@ -144,8 +144,8 @@ public class ProgramController {
         return REDIRECT_TO_SUBMIT_PAGE;
     }
 
-    @RequestMapping(value = "/details", method = RequestMethod.GET)
-    public String getProgramDetailsPage() {
+    @RequestMapping(value = "/details/{programId}", method = RequestMethod.GET)
+    public String getProgramDetailsPage(@PathVariable int programId) {
         return PROGRAM_DETAILS_PAGE;
     }
 

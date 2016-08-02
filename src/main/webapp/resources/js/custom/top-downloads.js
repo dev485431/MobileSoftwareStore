@@ -8,6 +8,7 @@ TopDownloads.prototype = function () {
     var topDownloadsDiv = $('#top-downloads'),
         topDownloadsLoader = $('#top-downloads-loader'),
         programsUrl = 'http://jquery-ui-project.esy.es/software_store/programs/',
+        programDetailsUrl = '/details',
         restApiUrl = '/rest/top/get',
         errorMsg = 'Top downloads unavailable',
         timeout = 5000,
@@ -36,7 +37,9 @@ TopDownloads.prototype = function () {
             var html = '';
             $.each(data, function (index, program) {
                 html += '<div>'
+                    + '<a href="' + programDetailsUrl + '/' + program.id + '">'
                     + '<img src="' + programsUrl + encodeURIComponent(program.name) + '/' + encodeURIComponent(program.img512) + '">' + '<br/>'
+                    + '</a>'
                     + 'Downloads: ' + program.downloads
                     + '</div>';
             });
