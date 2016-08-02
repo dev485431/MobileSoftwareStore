@@ -27,7 +27,8 @@ public class Program {
     public Program() {
     }
 
-    public Program(String name, String description, String img128, String img512, Category category, Statistics statistics) {
+    public Program(String name, String description, String img128, String img512, Category category, Statistics
+            statistics) {
         this.name = name;
         this.description = description;
         this.img128 = img128;

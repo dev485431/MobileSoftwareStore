@@ -61,9 +61,12 @@ public class ProgramController {
 
 
     @Autowired
-    public ProgramController(HttpServletRequest servletRequest, MessageSourceAccessor websiteMessages, ProgramManager programManager,
-                             CategoryManager categoryManager, ProgramFormValidator programFormValidator, AfterUploadFilesValidator afterUploadFilesValidator,
-                             ProgramZipFileHandler programZipFileHandler, ProgramInfoHandler programInfoHandler, ProgramTextDetailsValidator programTextDetailsValidator,
+    public ProgramController(HttpServletRequest servletRequest, MessageSourceAccessor websiteMessages, ProgramManager
+            programManager,
+                             CategoryManager categoryManager, ProgramFormValidator programFormValidator,
+                             AfterUploadFilesValidator afterUploadFilesValidator,
+                             ProgramZipFileHandler programZipFileHandler, ProgramInfoHandler programInfoHandler,
+                             ProgramTextDetailsValidator programTextDetailsValidator,
                              FtpTransferHandler ftpTransferHandler) {
         this.servletRequest = servletRequest;
         this.websiteMessages = websiteMessages;
@@ -92,7 +95,8 @@ public class ProgramController {
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
-    public String submitAddProgramForm(Model model, @ModelAttribute("programForm") @Valid ProgramForm programForm, BindingResult result, RedirectAttributes redirect) {
+    public String submitAddProgramForm(Model model, @ModelAttribute("programForm") @Valid ProgramForm programForm,
+                                       BindingResult result, RedirectAttributes redirect) {
         model.addAttribute("allCategories", categoryManager.getAllCategories());
         model.addAttribute("maxFileSizeKb", uploadedFileMaxSizeBytes / FILE_SIZE_DIVIDER);
         if (result.hasErrors()) return PROGRAM_SUBMIT_PAGE;
@@ -132,7 +136,8 @@ public class ProgramController {
         LOG.debug("Adding new program: " + programForm.toString());
         Category category = categoryManager.getCategoryById(programForm.getCategoryId());
         Statistics statistics = new Statistics(LocalDateTime.now(), INITIAL_DOWNLOADS);
-        Program newProgram = new Program(programForm.getName(), programForm.getDescription(), programTextDetails.getPicName128().orElse(null),
+        Program newProgram = new Program(programForm.getName(), programForm.getDescription(), programTextDetails
+                .getPicName128().orElse(null),
                 programTextDetails.getPicName512().orElse(null), category, statistics);
         programManager.addProgram(newProgram);
         redirect.addFlashAttribute("successMessage", websiteMessages.getMessage("msg.program.added"));
