@@ -1,4 +1,5 @@
 <%@include file="/WEB-INF/common/taglib.jsp" %>
+<%@include file="/WEB-INF/common/header.jsp" %>
 
 <div class="container" align="center">
     <h1>Our application encountered an error</h1>
@@ -18,3 +19,5 @@ Stack trace:
 <c:forEach items="${exception.stackTrace}" var="printStackTrace">${printStackTrace}
 </c:forEach>
 -->
+
+<%@include file="/WEB-INF/common/footer.jsp" %>
