@@ -3,6 +3,7 @@ package com.dataart.softwarestore.service.hibernate;
 import com.dataart.softwarestore.model.domain.Program;
 import com.dataart.softwarestore.service.MostPopularManager;
 import com.dataart.softwarestore.service.QueryResultsOrder;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,16 @@ public class HibernateMostPopularManager implements MostPopularManager {
     @Override
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
-    public List<Program> getTopPrograms(Integer limit, QueryResultsOrder downloadOrder, QueryResultsOrder timeUploadedOrder) {
-        String query = "from Program p order by p.statistics.downloads " + downloadOrder.value() + ", p.statistics.timeUploaded " + timeUploadedOrder.value();
-        return session().createQuery(query)
-                .setMaxResults(limit)
-                .setCacheable(true).list();
+    public List<Program> getTopPrograms(Integer limit, QueryResultsOrder downloadOrder, QueryResultsOrder
+            timeUploadedOrder) {
+        String query = "from Program p order by p.statistics.downloads " + downloadOrder.value() + ", p.statistics" +
+                ".timeUploaded " + timeUploadedOrder.value();
+        List<Program> programs = session().createQuery(query).setMaxResults(limit).setCacheable(true).list();
+        for (Program program : programs) {
+            Hibernate.initialize(program.getCategory());
+            Hibernate.initialize(program.getStatistics());
+        }
+        return programs;
     }
 
 }

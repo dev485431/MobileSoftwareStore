@@ -1,39 +1,24 @@
-package com.dataart.softwarestore.model.domain;
+package com.dataart.softwarestore.model.dto;
 
-import javax.persistence.*;
-import java.util.Map;
+public class ProgramBasicInfoDto {
 
-@Entity
-@Table(name = "programs")
-public class Program {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String name;
     private String description;
     private String img128;
     private String img512;
+    private String categoryName;
+    private Long downloads;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "statistics_id")
-    private Statistics statistics;
-
-    public Program() {
-    }
-
-    public Program(String name, String description, String img128, String img512, Category category, Statistics statistics) {
+    public ProgramBasicInfoDto(Integer id, String name, String description, String img128, String img512, String
+            categoryName, Long downloads) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.img128 = img128;
         this.img512 = img512;
-        this.category = category;
-        this.statistics = statistics;
+        this.categoryName = categoryName;
+        this.downloads = downloads;
     }
 
     public Integer getId() {
@@ -76,19 +61,19 @@ public class Program {
         this.img512 = img512;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
-    public Statistics getStatistics() {
-        return statistics;
+    public Long getDownloads() {
+        return downloads;
     }
 
-    public void setStatistics(Statistics statistics) {
-        this.statistics = statistics;
+    public void setDownloads(Long downloads) {
+        this.downloads = downloads;
     }
 }
