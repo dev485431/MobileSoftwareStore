@@ -1,6 +1,7 @@
 package com.dataart.softwarestore.web;
 
 import com.dataart.softwarestore.model.domain.Category;
+import com.dataart.softwarestore.model.domain.Program;
 import com.dataart.softwarestore.model.domain.Statistics;
 import com.dataart.softwarestore.model.dto.ProgramForm;
 import com.dataart.softwarestore.model.dto.ProgramTextDetails;
@@ -98,6 +99,7 @@ public class ProgramController {
 
         File uploadedZipFile = null;
         File extractPath = null;
+        ProgramTextDetails programTextDetails = null;
         try {
             File mainUploadDir = new File(servletRequest.getSession().getServletContext().getRealPath(tempUploadDir));
             uploadedZipFile = programZipFileHandler.transferFileToDir(programForm.getFile(), mainUploadDir);
@@ -109,7 +111,7 @@ public class ProgramController {
                 return REDIRECT_TO_SUBMIT_PAGE;
             }
 
-            ProgramTextDetails programTextDetails = programInfoHandler.getProgramTextDetails(extractedFiles.get(zipInnerTxtInfoFile));
+            programTextDetails = programInfoHandler.getProgramTextDetails(extractedFiles.get(zipInnerTxtInfoFile));
             if (!programTextDetailsValidator.isValid(programTextDetails)) {
                 LOG.debug("Zip inner txt file has wrong format or is missing required fields");
                 redirect.addFlashAttribute("errorMessage", websiteMessages.getMessage("error.zip.txt.file.format"));
@@ -130,10 +132,9 @@ public class ProgramController {
         LOG.debug("Adding new program: " + programForm.toString());
         Category category = categoryManager.getCategoryById(programForm.getCategoryId());
         Statistics statistics = new Statistics(LocalDateTime.now(), INITIAL_DOWNLOADS);
-        // String name, String description, String filename, byte[] data, Category category, Statistics statistics, Map<Integer, Image> images
-//        Program newProgram = new Program(programForm.getName(), programForm.getDescription(), programForm.getFile().getOriginalFilename(),
-//                programForm.getFile().getBytes(), category, statistics, new HashMap<>());
-//        programManager.addProgram(newProgram);
+        Program newProgram = new Program(programForm.getName(), programForm.getDescription(), programTextDetails.getPicName128().orElse(null),
+                programTextDetails.getPicName512().orElse(null), category, statistics);
+        programManager.addProgram(newProgram);
         redirect.addFlashAttribute("successMessage", websiteMessages.getMessage("msg.program.added"));
         return REDIRECT_TO_SUBMIT_PAGE;
     }

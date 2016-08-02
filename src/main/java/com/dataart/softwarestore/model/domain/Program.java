@@ -13,11 +13,8 @@ public class Program {
 
     private String name;
     private String description;
-    private String filename;
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    @Column(nullable = false, columnDefinition = "mediumblob")
-    private byte[] data;
+    private String img128;
+    private String img512;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -27,21 +24,16 @@ public class Program {
     @JoinColumn(name = "statistics_id")
     private Statistics statistics;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "program")
-    @MapKey(name = "size")
-    private Map<Integer, Image> images;
-
     public Program() {
     }
 
-    public Program(String name, String description, String filename, byte[] data, Category category, Statistics statistics, Map<Integer, Image> images) {
+    public Program(String name, String description, String img128, String img512, Category category, Statistics statistics) {
         this.name = name;
         this.description = description;
-        this.filename = filename;
-        this.data = data;
+        this.img128 = img128;
+        this.img512 = img512;
         this.category = category;
         this.statistics = statistics;
-        this.images = images;
     }
 
     public Integer getId() {
@@ -68,20 +60,20 @@ public class Program {
         this.description = description;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getImg128() {
+        return img128;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setImg128(String img128) {
+        this.img128 = img128;
     }
 
-    public byte[] getData() {
-        return data;
+    public String getImg512() {
+        return img512;
     }
 
-    public void setData(byte[] data) {
-        this.data = data;
+    public void setImg512(String img512) {
+        this.img512 = img512;
     }
 
     public Category getCategory() {
@@ -98,13 +90,5 @@ public class Program {
 
     public void setStatistics(Statistics statistics) {
         this.statistics = statistics;
-    }
-
-    public Map<Integer, Image> getImages() {
-        return images;
-    }
-
-    public void setImages(Map<Integer, Image> images) {
-        this.images = images;
     }
 }
