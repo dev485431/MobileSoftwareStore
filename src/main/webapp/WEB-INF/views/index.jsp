@@ -6,6 +6,10 @@
 
     <div class="row">
         <h2>Most Popular</h2>
+        <div id="top-downloads"></div>
+        <span id="top-downloads-loader" class="hidden">
+        <img src='${serviceServerPath}/resources/images/ajax-loader-small.gif'/>
+    </span>
     </div>
 
     <div class="row">

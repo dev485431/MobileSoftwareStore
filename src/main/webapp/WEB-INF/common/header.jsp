@@ -5,12 +5,11 @@
 <head>
     <title>Mobile Software Store</title>
 
-    <!-- Bootstrap javascript, jQuery-->
-    <script src="${serviceServerPath}/resources/js/bootstrap.min.js"></script>
-    <script src="${serviceServerPath}/resources/js/jquery-3.1.0.min.js"></script>
-
     <!-- Bootstrap styles -->
     <link rel="stylesheet" type="text/css" href="${serviceServerPath}/resources/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="${serviceServerPath}/resources/js/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="${serviceServerPath}/resources/js/slick/slick-theme.css"/>
+    <link rel="stylesheet" type="text/css" href="${serviceServerPath}/resources/css/software-store.css"/>
 
 </head>
 <body>
