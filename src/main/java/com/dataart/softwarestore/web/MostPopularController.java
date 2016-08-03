@@ -25,12 +25,9 @@ public class MostPopularController {
 
     @RequestMapping(value = "get", method = RequestMethod.GET)
     private List<ProgramBasicInfoDto> getTopPrograms() {
-        List<Program> programs = mostPopularManager.getTopPrograms(topProgramsLimitToQuery, QueryResultsOrder
+        return mostPopularManager.getTopPrograms(topProgramsLimitToQuery, QueryResultsOrder
                 .DESCENDING, QueryResultsOrder.DESCENDING);
-        return programs.stream().map(program -> new ProgramBasicInfoDto(program.getId(), program.getName(), program
-                .getDescription(), program.getImg128(), program.getImg512(), program.getCategory().getName(), program
-                .getStatistics().getDownloads()))
-                .collect(Collectors.toList());
+
     }
 
 }

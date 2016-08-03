@@ -1,11 +1,11 @@
 package com.dataart.softwarestore.service;
 
-import com.dataart.softwarestore.model.domain.Program;
+import com.dataart.softwarestore.model.dto.ProgramBasicInfoDto;
 
 import java.util.List;
 
 public interface MostPopularManager {
 
-    List<Program> getTopPrograms(Integer limit, QueryResultsOrder downloadOrder, QueryResultsOrder timeUploadedOrder);
+    List<ProgramBasicInfoDto> getTopPrograms(Integer limit, QueryResultsOrder downloadOrder, QueryResultsOrder timeUploadedOrder);
 
 }

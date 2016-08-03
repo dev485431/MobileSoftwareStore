@@ -1,6 +1,7 @@
 package com.dataart.softwarestore.service.hibernate;
 
 import com.dataart.softwarestore.model.domain.Program;
+import com.dataart.softwarestore.model.dto.ProgramBasicInfoDto;
 import com.dataart.softwarestore.service.MostPopularManager;
 import com.dataart.softwarestore.service.QueryResultsOrder;
 import org.hibernate.Hibernate;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HibernateMostPopularManager implements MostPopularManager {
@@ -25,16 +27,20 @@ public class HibernateMostPopularManager implements MostPopularManager {
     @Override
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
-    public List<Program> getTopPrograms(Integer limit, QueryResultsOrder downloadOrder, QueryResultsOrder
+    public List<ProgramBasicInfoDto> getTopPrograms(Integer limit, QueryResultsOrder downloadOrder, QueryResultsOrder
             timeUploadedOrder) {
         String query = "from Program p order by p.statistics.downloads " + downloadOrder.value() + ", p.statistics" +
                 ".timeUploaded " + timeUploadedOrder.value();
         List<Program> programs = session().createQuery(query).setMaxResults(limit).setCacheable(true).list();
-        for (Program program : programs) {
+
+        programs.stream().forEach(program -> {
             Hibernate.initialize(program.getCategory());
             Hibernate.initialize(program.getStatistics());
-        }
-        return programs;
+        });
+        return programs.stream().map(program -> new ProgramBasicInfoDto(program.getId(), program.getName(), program
+                .getDescription(), program.getImg128(), program.getImg512(), program.getCategory().getName(), program
+                .getStatistics().getDownloads()))
+                .collect(Collectors.toList());
     }
 
 }

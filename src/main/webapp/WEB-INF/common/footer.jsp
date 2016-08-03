@@ -4,6 +4,8 @@
 <script src="${serviceServerPath}/resources/js/slick/slick.min.js"></script>
 
 <script src="${serviceServerPath}/resources/js/custom/top-downloads.js"></script>
+<script src="${serviceServerPath}/resources/js/custom/jQuery.custom-pagination.js"></script>
+<script src="${serviceServerPath}/resources/js/custom/programs-pagination.js"></script>
 <script src="${serviceServerPath}/resources/js/custom/init.js"></script>
 
 
