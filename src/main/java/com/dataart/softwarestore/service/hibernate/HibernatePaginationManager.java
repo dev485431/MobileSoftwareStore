@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class HibernatePaginationManager implements PaginationManager {
 
+    private static final int DECREMENT_BY_ONE = 1;
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -45,4 +47,14 @@ public class HibernatePaginationManager implements PaginationManager {
                 .getStatistics().getDownloads()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Integer getMaxPageForCategory(Integer categoryId, Integer itemsPerPage) {
+        Long programsInCategory = (Long) session().createCriteria(Program.class)
+                .add(Restrictions.eq("category.id", categoryId))
+                .setProjection(Projections.rowCount()).uniqueResult();
+        return (int) Math.ceil((double) programsInCategory / itemsPerPage - DECREMENT_BY_ONE);
+    }
+
 }

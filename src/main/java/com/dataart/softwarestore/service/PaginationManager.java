@@ -8,4 +8,6 @@ public interface PaginationManager {
 
     List<ProgramBasicInfoDto> getPage(Integer pageNum, Integer categoryId, Integer itemsPerPage);
 
+    Integer getMaxPageForCategory(Integer categoryId, Integer itemsPerPage);
+
 }
