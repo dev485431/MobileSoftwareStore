@@ -5,7 +5,7 @@
     <!-- Most popular -->
 
     <div class="row">
-        <h2>Most Popular</h2>
+        <h2><a href="/">Home</a> / Most Popular</h2>
         <div id="top-downloads"></div>
     </div>
 
@@ -17,6 +17,9 @@
                 <c:forEach items="${allCategories}" var="category">
                     <a href="${serviceServerPath}/?categoryId=${category.id}">${category.name}</a><br>
                 </c:forEach>
+            </div><br/><br/>
+            <div class="row">
+                <h4><a href="/submit">Submit new program</a></h4>
             </div>
         </div>
         <!-- Content -->
@@ -53,6 +56,10 @@
                             <span>
                                 <img src="${serviceServerPath}/resources/images/category.gif"
                                      alt=""/> Category: ${program.categoryName}
+                            </span>
+                            <span>
+                                <img src="${serviceServerPath}/resources/images/category.gif"
+                                     alt=""/> Time uploaded: ${program.timeUploaded}
                             </span>
                         </p>
                     </div>

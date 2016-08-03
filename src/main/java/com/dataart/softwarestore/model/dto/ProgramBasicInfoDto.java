@@ -8,16 +8,18 @@ public class ProgramBasicInfoDto {
     private String img128;
     private String img512;
     private String categoryName;
+    private String timeUploaded;
     private Long downloads;
 
     public ProgramBasicInfoDto(Integer id, String name, String description, String img128, String img512, String
-            categoryName, Long downloads) {
+            categoryName, String timeUploaded, Long downloads) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.img128 = img128;
         this.img512 = img512;
         this.categoryName = categoryName;
+        this.timeUploaded = timeUploaded;
         this.downloads = downloads;
     }
 
@@ -67,6 +69,14 @@ public class ProgramBasicInfoDto {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public String getTimeUploaded() {
+        return timeUploaded;
+    }
+
+    public void setTimeUploaded(String timeUploaded) {
+        this.timeUploaded = timeUploaded;
     }
 
     public Long getDownloads() {

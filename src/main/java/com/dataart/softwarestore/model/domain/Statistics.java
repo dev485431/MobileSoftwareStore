@@ -1,8 +1,8 @@
 package com.dataart.softwarestore.model.domain;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "statistics")
@@ -13,13 +13,13 @@ public class Statistics {
     private Integer id;
 
     @Column(name = "time_uploaded")
-    private LocalDateTime timeUploaded;
+    private OffsetDateTime timeUploaded;
     private Long downloads;
 
     public Statistics() {
     }
 
-    public Statistics(LocalDateTime timeUploaded, Long downloads) {
+    public Statistics(OffsetDateTime timeUploaded, Long downloads) {
         this.timeUploaded = timeUploaded;
         this.downloads = downloads;
     }
@@ -32,11 +32,11 @@ public class Statistics {
         this.id = id;
     }
 
-    public LocalDateTime getTimeUploaded() {
+    public OffsetDateTime getTimeUploaded() {
         return timeUploaded;
     }
 
-    public void setTimeUploaded(LocalDateTime timeUploaded) {
+    public void setTimeUploaded(OffsetDateTime timeUploaded) {
         this.timeUploaded = timeUploaded;
     }
 

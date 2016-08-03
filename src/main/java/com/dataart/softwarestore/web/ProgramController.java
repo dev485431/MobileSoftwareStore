@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 @Controller
@@ -135,7 +135,7 @@ public class ProgramController {
 
         LOG.debug("Adding new program: " + programForm.toString());
         Category category = categoryManager.getCategoryById(programForm.getCategoryId());
-        Statistics statistics = new Statistics(LocalDateTime.now(), INITIAL_DOWNLOADS);
+        Statistics statistics = new Statistics(OffsetDateTime.now(), INITIAL_DOWNLOADS);
         Program newProgram = new Program(programForm.getName(), programForm.getDescription(), programTextDetails
                 .getPicName128().orElse(null),
                 programTextDetails.getPicName512().orElse(null), category, statistics);

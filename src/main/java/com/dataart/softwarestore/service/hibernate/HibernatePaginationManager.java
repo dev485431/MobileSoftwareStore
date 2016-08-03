@@ -10,9 +10,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +25,8 @@ public class HibernatePaginationManager implements PaginationManager {
     private static final int MIN_PAGE_NO = 0;
     @Autowired
     private SessionFactory sessionFactory;
+    @Value("${pagination.item.date.format}")
+    private String paginationItemDateFormat;
 
     private Session session() {
         return sessionFactory.getCurrentSession();
@@ -43,9 +47,11 @@ public class HibernatePaginationManager implements PaginationManager {
             Hibernate.initialize(program.getCategory());
             Hibernate.initialize(program.getStatistics());
         });
+
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(paginationItemDateFormat);
         return programs.stream().map(program -> new ProgramBasicInfoDto(program.getId(), program.getName(), program
                 .getDescription(), program.getImg128(), program.getImg512(), program.getCategory().getName(), program
-                .getStatistics().getDownloads()))
+                .getStatistics().getTimeUploaded().format(dateFormat), program.getStatistics().getDownloads()))
                 .collect(Collectors.toList());
     }
 

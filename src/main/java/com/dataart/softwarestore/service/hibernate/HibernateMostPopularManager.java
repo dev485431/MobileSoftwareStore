@@ -8,9 +8,11 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +21,8 @@ public class HibernateMostPopularManager implements MostPopularManager {
 
     @Autowired
     private SessionFactory sessionFactory;
+    @Value("${popular.item.date.format}")
+    private String popularItemDateFormat;
 
     private Session session() {
         return sessionFactory.getCurrentSession();
@@ -37,9 +41,11 @@ public class HibernateMostPopularManager implements MostPopularManager {
             Hibernate.initialize(program.getCategory());
             Hibernate.initialize(program.getStatistics());
         });
+
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(popularItemDateFormat);
         return programs.stream().map(program -> new ProgramBasicInfoDto(program.getId(), program.getName(), program
                 .getDescription(), program.getImg128(), program.getImg512(), program.getCategory().getName(), program
-                .getStatistics().getDownloads()))
+                .getStatistics().getTimeUploaded().format(dateFormat), program.getStatistics().getDownloads()))
                 .collect(Collectors.toList());
     }
 
