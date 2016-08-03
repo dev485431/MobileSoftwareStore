@@ -25,7 +25,8 @@
 
 
                 <div class="dropdown text-align-right">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Items per page
                         <span class="caret"></span>
                     </button>
@@ -42,38 +43,50 @@
                         <p>${program.description}</p>
                         <p class="date">
                             <span>
-                                <img src="${serviceServerPath}/resources/images/more.gif" alt="More details"/> <a href="${serviceServerPath}/details/${program.id}">More details</a>
+                                <img src="${serviceServerPath}/resources/images/more.gif" alt="More details"/> <a
+                                    href="${serviceServerPath}/details/${program.id}">More details</a>
                             </span>
                             <span>
-                                <img src="${serviceServerPath}/resources/images/download.gif" alt=""/> Downloads: ${program.downloads}
+                                <img src="${serviceServerPath}/resources/images/download.gif"
+                                     alt=""/> Downloads: ${program.downloads}
                             </span>
                             <span>
-                                <img src="${serviceServerPath}/resources/images/category.gif" alt=""/> Category: ${program.categoryName}
+                                <img src="${serviceServerPath}/resources/images/category.gif"
+                                     alt=""/> Category: ${program.categoryName}
                             </span>
                         </p>
                     </div>
                 </c:forEach>
 
                 <div id="programs-pagination-nav" class="text-align-right">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        <li class="page-item <c:if test="${pageNumber == 0}">disabled</c:if>">
-                            <a class="page-link" href="/?categoryId=${categoryId}&itemsPerPage=${itemsPerPage}&pageNumber=${pageNumber == 0 ? 0 : pageNumber - 1}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-                        <li <c:if test="${pageNumber == 0}">class="disabled"</c:if>><a href="/?categoryId=${categoryId}&itemsPerPage=${itemsPerPage}&pageNumber=0">First</a></li>
-                        <li class="page-item active"><span class="page-link">${pageNumber}<span class="sr-only">(current)</span></span></li>
-                        <li <c:if test="${pageNumber == maxPage}">class="disabled"</c:if>><a href="/?categoryId=${categoryId}&itemsPerPage=${itemsPerPage}&pageNumber=${maxPage}">Last (${maxPage})</a></li>
-                        <li class="page-item <c:if test="${pageNumber == maxPage}">disabled</c:if>">
-                            <a class="page-link" href="/?categoryId=${categoryId}&itemsPerPage=${itemsPerPage}&pageNumber=${pageNumber == maxPage ? maxPage : pageNumber + 1}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li class="page-item <c:if test="${pageNumber == 0}">disabled</c:if>">
+                                <a class="page-link"
+                                   href="/?categoryId=${categoryId}&itemsPerPage=${itemsPerPage}&pageNumber=${pageNumber == 0 ? 0 : pageNumber - 1}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li <c:if test="${pageNumber == 0}">class="disabled"</c:if>><a
+                                    href="/?categoryId=${categoryId}&itemsPerPage=${itemsPerPage}&pageNumber=0">First</a>
+                            </li>
+                            <li class="page-item active"><span class="page-link">${pageNumber}<span class="sr-only">(current)</span></span>
+                            </li>
+                            <li <c:if test="${pageNumber == maxPage}">class="disabled"</c:if>><a
+                                    href="/?categoryId=${categoryId}&itemsPerPage=${itemsPerPage}&pageNumber=${maxPage}">Last
+                                (${maxPage})</a></li>
+                            <li class="page-item <c:if test="${pageNumber == maxPage}">disabled</c:if>">
+                                <a class="page-link"
+                                   href="/?categoryId=${categoryId}&itemsPerPage=${itemsPerPage}&pageNumber=${pageNumber == maxPage ? maxPage : pageNumber + 1}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
 
             </div>

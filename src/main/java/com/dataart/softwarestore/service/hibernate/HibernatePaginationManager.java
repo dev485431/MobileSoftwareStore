@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class HibernatePaginationManager implements PaginationManager {
 
     private static final int DECREMENT_BY_ONE = 1;
+    private static final int MIN_PAGE_NO = 0;
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -54,7 +55,8 @@ public class HibernatePaginationManager implements PaginationManager {
         Long programsInCategory = (Long) session().createCriteria(Program.class)
                 .add(Restrictions.eq("category.id", categoryId))
                 .setProjection(Projections.rowCount()).uniqueResult();
-        return (int) Math.ceil((double) programsInCategory / itemsPerPage - DECREMENT_BY_ONE);
+        Integer maxPage = (int) Math.ceil((double) programsInCategory / itemsPerPage - DECREMENT_BY_ONE);
+        return maxPage >= MIN_PAGE_NO ? maxPage : MIN_PAGE_NO;
     }
 
 }
