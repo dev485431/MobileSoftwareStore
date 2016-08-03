@@ -30,10 +30,9 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
-                        <li><a href="/?categoryId=${categoryId}&itemsPerPage=5">5</a></li>
-                        <li><a href="/?categoryId=${categoryId}&itemsPerPage=10">10</a></li>
-                        <li><a href="/?categoryId=${categoryId}&itemsPerPage=20">20</a></li>
-                        <li><a href="/?categoryId=${categoryId}&itemsPerPage=50">50</a></li>
+                        <c:forEach items="${itemsPerPageOptions}" var="option">
+                            <li><a href="/?categoryId=${categoryId}&itemsPerPage=${option}">${option}</a></li>
+                        </c:forEach>
                     </ul>
                 </div>
 

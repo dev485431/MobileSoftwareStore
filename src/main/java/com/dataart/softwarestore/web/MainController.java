@@ -26,6 +26,8 @@ public class MainController {
     Integer defaultItemsPerPage;
     @Value("${programs.main.url}")
     String programsMainUrl;
+    @Value("${pagination.items.per.page.options}")
+    private int[] itemsPerPageOptions;
 
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -39,6 +41,7 @@ public class MainController {
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("itemsPerPage", itemsPerPage);
+        model.addAttribute("itemsPerPageOptions", itemsPerPageOptions);
         model.addAttribute("programsUrl", programsMainUrl);
         model.addAttribute("maxPage", paginationManager.getMaxPageForCategory(categoryId, itemsPerPage));
         model.addAttribute("pageContent", paginationManager.getPage(pageNumber, categoryId, itemsPerPage));
