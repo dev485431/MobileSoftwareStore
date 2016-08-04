@@ -44,7 +44,6 @@ public class ProgramController {
     private static final String PROGRAM_SUBMIT_PAGE = "submit";
     private static final String PROGRAM_DETAILS_PAGE = "details";
     private static final String REDIRECT_TO_SUBMIT_PAGE = "redirect:/submit";
-    private static final String REDIRECT_TO_DETAILS_PAGE = "redirect:/details/";
     private static final Long INITIAL_DOWNLOADS = 0L;
     private static final int FILE_SIZE_DIVIDER = 1024;
 
@@ -68,6 +67,10 @@ public class ProgramController {
     private String zipInnerTxtInfoFile;
     @Value("${programs.main.url}")
     private String programsMainUrl;
+    @Value("${program.file.download.mime.type}")
+    private String programDownloadMimeType;
+    @Value("${program.file.download.extension}")
+    private String programDownloadExtension;
 
 
     @Autowired
@@ -164,8 +167,9 @@ public class ProgramController {
     @RequestMapping(value = "/download/{programId}", method = RequestMethod.GET)
     public void downloadProgram(HttpServletResponse response, @PathVariable Integer programId) {
         Program program = programManager.getProgramById(programId);
-        response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment;filename=" + zipInnerAppFile);
+        response.setContentType(programDownloadMimeType);
+        response.setHeader("Content-Disposition", "attachment;filename=" + program.getName() +
+                programDownloadExtension);
         String downloadLink = null;
         try (InputStream input = new URL(downloadLink).openStream()) {
             LOG.debug("Downloading program from link: " + downloadLink);
