@@ -59,6 +59,10 @@ public class ProgramController {
     private FtpTransferHandler ftpTransferHandler;
     @Value("${uploaded.file.max.size.bytes}")
     private Long uploadedFileMaxSizeBytes;
+    @Value("${program.zip.required.inner.files}")
+    private String[] zipFileRequiredInnerFiles;
+    @Value("${uploaded.file.extension}")
+    private String uploadedFileExtension;
     @Value("${temp.upload.dir}")
     private String tempUploadDir;
     @Value("${program.zip.inner.app.filename}")
@@ -104,6 +108,8 @@ public class ProgramController {
         model.addAttribute("programForm", new ProgramForm());
         model.addAttribute("allCategories", categoryManager.getAllCategories());
         model.addAttribute("maxFileSizeKb", uploadedFileMaxSizeBytes / FILE_SIZE_DIVIDER);
+        model.addAttribute("requiredInnerFiles", zipFileRequiredInnerFiles);
+        model.addAttribute("uploadedFileExtension", uploadedFileExtension);
         return PROGRAM_SUBMIT_PAGE;
     }
 

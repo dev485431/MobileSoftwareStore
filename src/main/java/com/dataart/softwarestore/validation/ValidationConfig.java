@@ -10,7 +10,5 @@ public class ValidationConfig {
     public static final int ZERO = 0;
 
     public static final String REGEXP_ALPHANUMERIC = "^[A-Za-z0-9\\s]+$";
-    public static final String ZIP_EXTENSION = ".zip";
-
 
 }

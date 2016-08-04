@@ -3,16 +3,31 @@
 
 <div class="container">
     <!-- Most popular -->
-
     <div class="row">
         <h2>Most Popular</h2>
     </div>
 
     <div class="row">
+        <div id="top-downloads"></div>
+    </div>
+
+    <div class="row">
         <!-- Categories -->
         <div class="col-xs-6 col-md-4">
-            ...
+            <div class="row">
+                <h4><a href="/">Home</a></h4>
+                <h4><a href="/submit">Submit new program</a></h4>
+            </div>
+
+            <div class="row">
+                <h2>Categories</h2>
+                <c:forEach items="${allCategories}" var="category">
+                    <a href="${serviceServerPath}/?categoryId=${category.id}">${category.name}</a><br>
+                </c:forEach>
+            </div>
+            <br/><br/>
         </div>
+
         <!-- Content -->
         <div class="col-xs-12 col-sm-6 col-md-8">
             <div class="row">
@@ -54,17 +69,22 @@
                                    placeholder="Description"/>
                 </div>
                 <div class="form-group">
-                    <label for="file">File</label><br>
+                    <label for="file">File<small class="text-muted">* ** ***</small></label><br>
                     <form:errors cssClass="bg-danger" path="file"/>
                     <input type="file" name="file" id="file">
                 </div>
                 <button type="submit" class="btn btn-default">Submit</button>
             </form:form>
-            <small class="text-muted">* Maximum program file size is ${maxFileSizeKb} Kb</small>
+            <small class="text-muted">* Maximum program file size is <strong>${maxFileSizeKb} Kb</strong></small>
             </br>
-            <small class="text-muted">** The program file must be a zip file.It cannot be empty.</br>
-                It must contain only the following files in the main zip file folder: app.apk, info.txt, 128x128.jpg,
-                512x512.jpg
+            <small class="text-muted">** The program file must be a <strong>${uploadedFileExtension}</strong> file.It
+                cannot be <strong>empty</strong>.</br>
+                *** It must contain only the following files in the <u>main zip file folder</u>:
+                <strong>
+                    <c:forEach var="requiredInnerFile" items="${requiredInnerFiles}">
+                        ${requiredInnerFile}&nbsp;
+                    </c:forEach>
+                </strong>
             </small>
 
         </div>

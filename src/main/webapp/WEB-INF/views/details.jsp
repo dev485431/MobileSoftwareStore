@@ -2,10 +2,12 @@
 <%@include file="/WEB-INF/common/header.jsp" %>
 
 <div class="container">
-
+    <!-- Most popular -->
+    <div class="row">
+        <h2>Most Popular</h2>
+    </div>
 
     <div class="row">
-        <h2><a href="/">Home</a> / Program details</h2>
         <div id="top-downloads"></div>
     </div>
 
@@ -13,15 +15,17 @@
         <!-- Categories -->
         <div class="col-xs-6 col-md-4">
             <div class="row">
+                <h4><a href="/">Home</a></h4>
+                <h4><a href="/submit">Submit new program</a></h4>
+            </div>
+
+            <div class="row">
                 <h2>Categories</h2>
                 <c:forEach items="${allCategories}" var="category">
                     <a href="${serviceServerPath}/?categoryId=${category.id}">${category.name}</a><br>
                 </c:forEach>
             </div>
             <br/><br/>
-            <div class="row">
-                <h4><a href="/submit">Submit new program</a></h4>
-            </div>
         </div>
         <!-- Content -->
         <div class="col-xs-12 col-sm-6 col-md-8">

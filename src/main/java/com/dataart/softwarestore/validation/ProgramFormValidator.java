@@ -11,7 +11,6 @@ import org.springframework.validation.Validator;
 import org.springframework.web.multipart.MultipartFile;
 
 import static com.dataart.softwarestore.validation.ValidationConfig.ZERO;
-import static com.dataart.softwarestore.validation.ValidationConfig.ZIP_EXTENSION;
 
 @Component
 public class ProgramFormValidator implements Validator {
@@ -23,6 +22,8 @@ public class ProgramFormValidator implements Validator {
     private BeforeUploadFileValidator beforeUploadFileValidator;
     @Value("${uploaded.file.max.size.bytes}")
     private Long uploadedFileMaxSizeBytes;
+    @Value("${uploaded.file.extension}")
+    private String uploadedFileExtension;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -39,7 +40,7 @@ public class ProgramFormValidator implements Validator {
                 LOG.debug("The file is empty");
                 errors.rejectValue("file", "error.empty.file");
             }
-            if (!programFile.getOriginalFilename().toLowerCase().endsWith(ZIP_EXTENSION)) {
+            if (!programFile.getOriginalFilename().toLowerCase().endsWith(uploadedFileExtension)) {
                 errors.rejectValue("file", "error.file.extension");
             }
             if (programManager.programNameExists(programForm.getName())) {
