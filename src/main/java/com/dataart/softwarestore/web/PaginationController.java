@@ -1,6 +1,6 @@
 package com.dataart.softwarestore.web;
 
-import com.dataart.softwarestore.model.dto.ProgramBasicInfoDto;
+import com.dataart.softwarestore.model.dto.ProgramDetailsDto;
 import com.dataart.softwarestore.service.PaginationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ public class PaginationController {
     private PaginationManager paginationManager;
 
     @RequestMapping(value = "page/{pageNum:[\\d]+}", method = RequestMethod.GET)
-    private List<ProgramBasicInfoDto> getPage(@PathVariable("pageNum") Integer pageNum, @RequestParam(value =
+    private List<ProgramDetailsDto> getPage(@PathVariable("pageNum") Integer pageNum, @RequestParam(value =
             "categoryId") Integer categoryId, @RequestParam(value = "itemsPerPage") Integer itemsPerPage) {
 
         return paginationManager.getPage(pageNum, categoryId, itemsPerPage);

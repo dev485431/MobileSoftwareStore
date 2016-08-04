@@ -3,6 +3,7 @@ package com.dataart.softwarestore.web;
 import com.dataart.softwarestore.model.domain.Category;
 import com.dataart.softwarestore.model.domain.Program;
 import com.dataart.softwarestore.model.domain.Statistics;
+import com.dataart.softwarestore.model.dto.ProgramDetailsDto;
 import com.dataart.softwarestore.model.dto.ProgramForm;
 import com.dataart.softwarestore.model.dto.ProgramTextDetails;
 import com.dataart.softwarestore.service.CategoryManager;
@@ -29,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -39,6 +42,7 @@ public class ProgramController {
     private static final String PROGRAM_SUBMIT_PAGE = "submit";
     private static final String PROGRAM_DETAILS_PAGE = "details";
     private static final String REDIRECT_TO_SUBMIT_PAGE = "redirect:/submit";
+    private static final String REDIRECT_TO_DETAILS_PAGE = "redirect:/details/";
     private static final Long INITIAL_DOWNLOADS = 0L;
     private static final int FILE_SIZE_DIVIDER = 1024;
 
@@ -56,8 +60,12 @@ public class ProgramController {
     private Long uploadedFileMaxSizeBytes;
     @Value("${temp.upload.dir}")
     private String tempUploadDir;
+    @Value("${program.zip.inner.app.filename}")
+    private String zipInnerAppFile;
     @Value("${program.zip.inner.txt.info.file}")
     private String zipInnerTxtInfoFile;
+    @Value("${programs.main.url}")
+    private String programsMainUrl;
 
 
     @Autowired
@@ -145,8 +153,26 @@ public class ProgramController {
     }
 
     @RequestMapping(value = "/details/{programId}", method = RequestMethod.GET)
-    public String getProgramDetailsPage(@PathVariable int programId) {
+    public String getProgramDetailsPage(Model model, @PathVariable int programId) {
+        model.addAttribute("allCategories", categoryManager.getAllCategories());
+        model.addAttribute("programDetails", programManager.getProgramDetailsById(programId));
         return PROGRAM_DETAILS_PAGE;
+    }
+
+    @RequestMapping(value = "/download/{programId}", method = RequestMethod.GET)
+    public String downloadProgram(RedirectAttributes redirect, @PathVariable Integer programId) {
+        ProgramDetailsDto programDetails = programManager.getProgramDetailsById(programId);
+        String downloadLink;
+        try {
+            downloadLink = programsMainUrl + URLEncoder.encode(programDetails.getName(), "UTF-8") + "/" +
+                    URLEncoder.encode(zipInnerAppFile, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOG.error("Failed to encode the download link. Error is: " + e.getMessage());
+            redirect.addFlashAttribute("errorMessage", websiteMessages.getMessage("error.download.fail"));
+            return REDIRECT_TO_DETAILS_PAGE + programId;
+        }
+        LOG.debug("Redirecting to program download link: " + downloadLink);
+        return "redirect:" + downloadLink;
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.GET)

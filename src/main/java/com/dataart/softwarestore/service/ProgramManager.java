@@ -1,6 +1,7 @@
 package com.dataart.softwarestore.service;
 
 import com.dataart.softwarestore.model.domain.Program;
+import com.dataart.softwarestore.model.dto.ProgramDetailsDto;
 
 public interface ProgramManager {
 
@@ -9,6 +10,8 @@ public interface ProgramManager {
     boolean programNameExists(String name);
 
     Program getProgramById(Integer id);
+
+    ProgramDetailsDto getProgramDetailsById(Integer id);
 
     void removeProgram(Integer id);
 

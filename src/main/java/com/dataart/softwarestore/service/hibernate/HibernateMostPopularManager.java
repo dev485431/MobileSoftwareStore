@@ -1,7 +1,7 @@
 package com.dataart.softwarestore.service.hibernate;
 
 import com.dataart.softwarestore.model.domain.Program;
-import com.dataart.softwarestore.model.dto.ProgramBasicInfoDto;
+import com.dataart.softwarestore.model.dto.ProgramDetailsDto;
 import com.dataart.softwarestore.service.MostPopularManager;
 import com.dataart.softwarestore.service.QueryResultsOrder;
 import org.hibernate.Hibernate;
@@ -31,7 +31,7 @@ public class HibernateMostPopularManager implements MostPopularManager {
     @Override
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
-    public List<ProgramBasicInfoDto> getTopPrograms(Integer limit, QueryResultsOrder downloadOrder, QueryResultsOrder
+    public List<ProgramDetailsDto> getTopPrograms(Integer limit, QueryResultsOrder downloadOrder, QueryResultsOrder
             timeUploadedOrder) {
         String query = "from Program p order by p.statistics.downloads " + downloadOrder.value() + ", p.statistics" +
                 ".timeUploaded " + timeUploadedOrder.value();
@@ -43,7 +43,7 @@ public class HibernateMostPopularManager implements MostPopularManager {
         });
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(popularItemDateFormat);
-        return programs.stream().map(program -> new ProgramBasicInfoDto(program.getId(), program.getName(), program
+        return programs.stream().map(program -> new ProgramDetailsDto(program.getId(), program.getName(), program
                 .getDescription(), program.getImg128(), program.getImg512(), program.getCategory().getName(), program
                 .getStatistics().getTimeUploaded().format(dateFormat), program.getStatistics().getDownloads()))
                 .collect(Collectors.toList());

@@ -1,12 +1,12 @@
 package com.dataart.softwarestore.service;
 
-import com.dataart.softwarestore.model.dto.ProgramBasicInfoDto;
+import com.dataart.softwarestore.model.dto.ProgramDetailsDto;
 
 import java.util.List;
 
 public interface PaginationManager {
 
-    List<ProgramBasicInfoDto> getPage(Integer pageNum, Integer categoryId, Integer itemsPerPage);
+    List<ProgramDetailsDto> getPage(Integer pageNum, Integer categoryId, Integer itemsPerPage);
 
     Integer getMaxPageForCategory(Integer categoryId, Integer itemsPerPage);
 

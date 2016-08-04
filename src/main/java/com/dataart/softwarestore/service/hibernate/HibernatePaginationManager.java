@@ -1,7 +1,7 @@
 package com.dataart.softwarestore.service.hibernate;
 
 import com.dataart.softwarestore.model.domain.Program;
-import com.dataart.softwarestore.model.dto.ProgramBasicInfoDto;
+import com.dataart.softwarestore.model.dto.ProgramDetailsDto;
 import com.dataart.softwarestore.service.PaginationManager;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -35,7 +35,7 @@ public class HibernatePaginationManager implements PaginationManager {
     @Override
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
-    public List<ProgramBasicInfoDto> getPage(Integer pageNum, Integer categoryId, Integer itemsPerPage) {
+    public List<ProgramDetailsDto> getPage(Integer pageNum, Integer categoryId, Integer itemsPerPage) {
         Integer firstResult = pageNum * itemsPerPage;
         Criteria criteria = session().createCriteria(Program.class);
         List<Program> programs = criteria.add(Restrictions.eq("category.id", categoryId))
@@ -49,7 +49,7 @@ public class HibernatePaginationManager implements PaginationManager {
         });
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(paginationItemDateFormat);
-        return programs.stream().map(program -> new ProgramBasicInfoDto(program.getId(), program.getName(), program
+        return programs.stream().map(program -> new ProgramDetailsDto(program.getId(), program.getName(), program
                 .getDescription(), program.getImg128(), program.getImg512(), program.getCategory().getName(), program
                 .getStatistics().getTimeUploaded().format(dateFormat), program.getStatistics().getDownloads()))
                 .collect(Collectors.toList());

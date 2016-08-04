@@ -1,7 +1,6 @@
 package com.dataart.softwarestore.web;
 
-import com.dataart.softwarestore.model.domain.Program;
-import com.dataart.softwarestore.model.dto.ProgramBasicInfoDto;
+import com.dataart.softwarestore.model.dto.ProgramDetailsDto;
 import com.dataart.softwarestore.service.MostPopularManager;
 import com.dataart.softwarestore.service.QueryResultsOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/rest/top")
@@ -24,7 +22,7 @@ public class MostPopularController {
     private MostPopularManager mostPopularManager;
 
     @RequestMapping(value = "get", method = RequestMethod.GET)
-    private List<ProgramBasicInfoDto> getTopPrograms() {
+    private List<ProgramDetailsDto> getTopPrograms() {
         return mostPopularManager.getTopPrograms(topProgramsLimitToQuery, QueryResultsOrder
                 .DESCENDING, QueryResultsOrder.DESCENDING);
 

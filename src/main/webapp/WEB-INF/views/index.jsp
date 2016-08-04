@@ -5,7 +5,15 @@
     <!-- Most popular -->
 
     <div class="row">
-        <h2><a href="/">Home</a> / Most Popular</h2>
+        <div class="col-xs-6 col-md-4">
+            <h2><a href="/">Home</a></h2>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-8">
+
+        </div>
+    </div>
+
+    <div class="row">
         <div id="top-downloads"></div>
     </div>
 
@@ -17,7 +25,8 @@
                 <c:forEach items="${allCategories}" var="category">
                     <a href="${serviceServerPath}/?categoryId=${category.id}">${category.name}</a><br>
                 </c:forEach>
-            </div><br/><br/>
+            </div>
+            <br/><br/>
             <div class="row">
                 <h4><a href="/submit">Submit new program</a></h4>
             </div>
@@ -44,7 +53,7 @@
                     <div id="program-item">
                         <h3><a href="${serviceServerPath}/details/${program.id}">${program.name}</a></h3>
                         <p>${program.description}</p>
-                        <p class="date">
+                        <p>
                             <span>
                                 <img src="${serviceServerPath}/resources/images/more.gif" alt="More details"/> <a
                                     href="${serviceServerPath}/details/${program.id}">More details</a>

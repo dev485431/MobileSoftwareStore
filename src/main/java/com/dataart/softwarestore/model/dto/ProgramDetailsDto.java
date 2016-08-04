@@ -1,6 +1,6 @@
 package com.dataart.softwarestore.model.dto;
 
-public class ProgramBasicInfoDto {
+public class ProgramDetailsDto {
 
     private Integer id;
     private String name;
@@ -11,7 +11,7 @@ public class ProgramBasicInfoDto {
     private String timeUploaded;
     private Long downloads;
 
-    public ProgramBasicInfoDto(Integer id, String name, String description, String img128, String img512, String
+    public ProgramDetailsDto(Integer id, String name, String description, String img128, String img512, String
             categoryName, String timeUploaded, Long downloads) {
         this.id = id;
         this.name = name;
