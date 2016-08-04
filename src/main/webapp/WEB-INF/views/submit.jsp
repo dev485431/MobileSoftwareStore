@@ -79,7 +79,7 @@
             </br>
             <small class="text-muted">** The program file must be a <strong>${uploadedFileExtension}</strong> file.It
                 cannot be <strong>empty</strong>.</br>
-                *** It must contain only the following files in the <u>main zip file folder</u>:
+                *** It must contain only the following files in the <u>main archive folder</u>:
                 <strong>
                     <c:forEach var="requiredInnerFile" items="${requiredInnerFiles}">
                         ${requiredInnerFile}&nbsp;
