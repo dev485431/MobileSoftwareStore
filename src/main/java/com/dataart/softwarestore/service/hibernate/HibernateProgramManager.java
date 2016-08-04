@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class HibernateProgramManager implements ProgramManager {
 
+    private static final int DOWNLOADS_INCREMENT = 1;
     @Autowired
     private SessionFactory sessionFactory;
     @Value("${program.details.date.format}")
@@ -53,6 +54,14 @@ public class HibernateProgramManager implements ProgramManager {
         return new ProgramDetailsDto(program.getId(), program.getName(), program
                 .getDescription(), program.getImg128(), program.getImg512(), program.getCategory().getName(), program
                 .getStatistics().getTimeUploaded().format(dateFormat), program.getStatistics().getDownloads());
+    }
+
+    @Override
+    @Transactional
+    public void incrementDownloads(Integer programId) {
+        Program program = getProgramById(programId);
+        program.getStatistics().setDownloads(program.getStatistics().getDownloads() + DOWNLOADS_INCREMENT);
+        session().update(program);
     }
 
     @Override

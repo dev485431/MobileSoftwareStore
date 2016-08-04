@@ -3,7 +3,6 @@ package com.dataart.softwarestore.web;
 import com.dataart.softwarestore.model.domain.Category;
 import com.dataart.softwarestore.model.domain.Program;
 import com.dataart.softwarestore.model.domain.Statistics;
-import com.dataart.softwarestore.model.dto.ProgramDetailsDto;
 import com.dataart.softwarestore.model.dto.ProgramForm;
 import com.dataart.softwarestore.model.dto.ProgramTextDetails;
 import com.dataart.softwarestore.service.CategoryManager;
@@ -15,6 +14,7 @@ import com.dataart.softwarestore.validation.AfterUploadFilesValidator;
 import com.dataart.softwarestore.validation.ProgramFormValidator;
 import com.dataart.softwarestore.validation.ProgramTextDetailsValidator;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,10 +27,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.InputStream;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -160,19 +162,21 @@ public class ProgramController {
     }
 
     @RequestMapping(value = "/download/{programId}", method = RequestMethod.GET)
-    public String downloadProgram(RedirectAttributes redirect, @PathVariable Integer programId) {
-        ProgramDetailsDto programDetails = programManager.getProgramDetailsById(programId);
-        String downloadLink;
-        try {
-            downloadLink = programsMainUrl + URLEncoder.encode(programDetails.getName(), "UTF-8") + "/" +
+    public void downloadProgram(HttpServletResponse response, @PathVariable Integer programId) {
+        Program program = programManager.getProgramById(programId);
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment;filename=" + zipInnerAppFile);
+        String downloadLink = null;
+        try (InputStream input = new URL(downloadLink).openStream()) {
+            LOG.debug("Downloading program from link: " + downloadLink);
+            downloadLink = programsMainUrl + URLEncoder.encode(program.getName(), "UTF-8") + "/" +
                     URLEncoder.encode(zipInnerAppFile, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            LOG.error("Failed to encode the download link. Error is: " + e.getMessage());
-            redirect.addFlashAttribute("errorMessage", websiteMessages.getMessage("error.download.fail"));
-            return REDIRECT_TO_DETAILS_PAGE + programId;
+            IOUtils.copy(input, response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException e) {
+            LOG.error("Failed to trigger file download for :" + downloadLink + ", Error is: " + e.getMessage());
         }
-        LOG.debug("Redirecting to program download link: " + downloadLink);
-        return "redirect:" + downloadLink;
+        programManager.incrementDownloads(programId);
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.GET)

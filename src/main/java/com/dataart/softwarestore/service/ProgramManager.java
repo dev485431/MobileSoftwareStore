@@ -13,6 +13,8 @@ public interface ProgramManager {
 
     ProgramDetailsDto getProgramDetailsById(Integer id);
 
+    void incrementDownloads(Integer programId);
+
     void removeProgram(Integer id);
 
 }
