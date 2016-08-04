@@ -24,7 +24,7 @@ public class MainController {
     Integer defaultCategoryId;
     @Value("${pagination.default.items.per.page}")
     Integer defaultItemsPerPage;
-    @Value("${programs.main.url}")
+    @Value("${programs.main.url.domain}")
     String programsMainUrl;
     @Value("${pagination.items.per.page.options}")
     private int[] itemsPerPageOptions;

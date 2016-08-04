@@ -32,8 +32,10 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -69,8 +71,10 @@ public class ProgramController {
     private String zipInnerAppFile;
     @Value("${program.zip.inner.txt.info.file}")
     private String zipInnerTxtInfoFile;
-    @Value("${programs.main.url}")
-    private String programsMainUrl;
+    @Value("${programs.main.url.domain}")
+    private String programsMainUrlDomain;
+    @Value("${programs.main.url.path}")
+    private String programsMainUrlPath;
     @Value("${program.file.download.mime.type}")
     private String programDownloadMimeType;
     @Value("${program.file.download.extension}")
@@ -176,15 +180,25 @@ public class ProgramController {
         response.setContentType(programDownloadMimeType);
         response.setHeader("Content-Disposition", "attachment;filename=" + program.getName() +
                 programDownloadExtension);
-        String downloadLink = null;
-        try (InputStream input = new URL(downloadLink).openStream()) {
+
+        URL downloadLink = null;
+        try {
+            URI uri = new URI(
+                    "http",
+                    programsMainUrlDomain,
+                    programsMainUrlPath + program.getName() + "/" + zipInnerAppFile,
+                    null);
+            downloadLink = uri.toURL();
+        } catch (URISyntaxException | MalformedURLException e) {
+            LOG.error("Failed to prepare file url: " + e.getMessage());
+        }
+
+        try (InputStream input = downloadLink.openStream()) {
             LOG.debug("Downloading program from link: " + downloadLink);
-            downloadLink = programsMainUrl + URLEncoder.encode(program.getName(), "UTF-8") + "/" +
-                    URLEncoder.encode(zipInnerAppFile, "UTF-8");
             IOUtils.copy(input, response.getOutputStream());
             response.flushBuffer();
         } catch (IOException e) {
-            LOG.error("Failed to trigger file download for :" + downloadLink + ", Error is: " + e.getMessage());
+            LOG.error("Failed to trigger file download for: " + downloadLink + ", Error is: " + e.getMessage());
         }
         programManager.incrementDownloads(programId);
     }
