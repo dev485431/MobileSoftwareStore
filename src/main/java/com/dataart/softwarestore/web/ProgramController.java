@@ -179,7 +179,7 @@ public class ProgramController {
         response.setHeader("Content-Disposition", "attachment;filename=" + program.getName() +
                 programDownloadExtension);
 
-        URL downloadLink = urlsHandler.getUrl(program.getId(), UrlType.PROGRAM_FILE);
+        URL downloadLink = urlsHandler.getProgramDownloadUrl(program.getId());
         try (InputStream input = downloadLink.openStream()) {
             LOG.debug("Downloading program from link: " + downloadLink);
             IOUtils.copy(input, response.getOutputStream());

@@ -34,40 +34,26 @@ public class UrlsHandler {
                     programsMainUrlPath,
                     null);
             url = uri.toURL();
+            LOG.debug("Main programs url is: " + url);
         } catch (URISyntaxException | MalformedURLException e) {
-            LOG.error("Failed to prepare url: " + e.getMessage());
+            LOG.error("Failed to prepare main programs url: " + e.getMessage());
         }
         return url;
     }
 
-    public URL getUrl(Integer programId, UrlType urlType) {
+    public URL getProgramDownloadUrl(Integer programId) {
         ProgramDetailsDto programDetails = programManager.getProgramDetailsById(programId);
-        URL targetUrl = null;
-        switch (urlType) {
-            case PROGRAM_FILE:
-                targetUrl = prepareURL(programDetails, zipInnerAppFile);
-                break;
-            case IMG128:
-                targetUrl = prepareURL(programDetails, programDetails.getImg128());
-                break;
-            case IMG512:
-                targetUrl = prepareURL(programDetails, programDetails.getImg512());
-                break;
-        }
-        return targetUrl;
-    }
-
-    private URL prepareURL(ProgramDetailsDto programDetails, String filename) {
         URL url = null;
         try {
             URI uri = new URI(
                     "http",
                     programsMainUrlDomain,
-                    programsMainUrlPath + programDetails.getName() + "/" + filename,
+                    programsMainUrlPath + programDetails.getName() + "/" + zipInnerAppFile,
                     null);
             url = uri.toURL();
+            LOG.debug("Prepared program download url: " + url);
         } catch (URISyntaxException | MalformedURLException e) {
-            LOG.error("Failed to prepare url: " + e.getMessage());
+            LOG.error("Failed to prepare download url: " + e.getMessage());
         }
         return url;
     }

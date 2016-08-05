@@ -69,7 +69,9 @@
                                    placeholder="Description"/>
                 </div>
                 <div class="form-group">
-                    <label for="file">File<small class="text-muted">* ** ***</small></label><br>
+                    <label for="file">File
+                        <small class="text-muted">* ** ***</small>
+                    </label><br>
                     <form:errors cssClass="bg-danger" path="file"/>
                     <input type="file" name="file" id="file">
                 </div>
@@ -86,10 +88,9 @@
                     </c:forEach>
                 </strong>
             </small>
-
         </div>
     </div>
-
+    <br/>
 
 </div>
 </div>

@@ -24,6 +24,8 @@ public class ProgramFormValidator implements Validator {
     private Long uploadedFileMaxSizeBytes;
     @Value("${uploaded.file.extension}")
     private String uploadedFileExtension;
+    @Value("${program.name.restricted.names}")
+    private String[] restrictedProgramNames;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -43,6 +45,13 @@ public class ProgramFormValidator implements Validator {
             if (!programFile.getOriginalFilename().toLowerCase().endsWith(uploadedFileExtension)) {
                 errors.rejectValue("file", "error.file.extension");
             }
+
+            for (String restrictedName : restrictedProgramNames) {
+                if (programForm.getName().toLowerCase().equals(restrictedName.toLowerCase())) {
+                    errors.rejectValue("name", "error.program.name.restricted");
+                }
+            }
+
             if (programManager.programNameExists(programForm.getName())) {
                 LOG.debug("Program name already exists in the database");
                 errors.rejectValue("name", "error.program.name.exists");
