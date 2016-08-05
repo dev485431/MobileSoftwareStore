@@ -7,9 +7,7 @@ import com.dataart.softwarestore.model.dto.ProgramForm;
 import com.dataart.softwarestore.model.dto.ProgramTextDetails;
 import com.dataart.softwarestore.service.CategoryManager;
 import com.dataart.softwarestore.service.ProgramManager;
-import com.dataart.softwarestore.utils.FtpTransferHandler;
-import com.dataart.softwarestore.utils.ProgramInfoHandler;
-import com.dataart.softwarestore.utils.ProgramZipFileHandler;
+import com.dataart.softwarestore.utils.*;
 import com.dataart.softwarestore.validation.AfterUploadFilesValidator;
 import com.dataart.softwarestore.validation.ProgramFormValidator;
 import com.dataart.softwarestore.validation.ProgramTextDetailsValidator;
@@ -32,9 +30,6 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -59,6 +54,7 @@ public class ProgramController {
     private ProgramInfoHandler programInfoHandler;
     private ProgramTextDetailsValidator programTextDetailsValidator;
     private FtpTransferHandler ftpTransferHandler;
+    private UrlsHandler urlsHandler;
     @Value("${uploaded.file.max.size.bytes}")
     private Long uploadedFileMaxSizeBytes;
     @Value("${program.zip.required.inner.files}")
@@ -88,7 +84,7 @@ public class ProgramController {
                              AfterUploadFilesValidator afterUploadFilesValidator,
                              ProgramZipFileHandler programZipFileHandler, ProgramInfoHandler programInfoHandler,
                              ProgramTextDetailsValidator programTextDetailsValidator,
-                             FtpTransferHandler ftpTransferHandler) {
+                             FtpTransferHandler ftpTransferHandler, UrlsHandler urlsHandler) {
         this.servletRequest = servletRequest;
         this.websiteMessages = websiteMessages;
         this.programManager = programManager;
@@ -99,6 +95,7 @@ public class ProgramController {
         this.programInfoHandler = programInfoHandler;
         this.programTextDetailsValidator = programTextDetailsValidator;
         this.ftpTransferHandler = ftpTransferHandler;
+        this.urlsHandler = urlsHandler;
     }
 
     @InitBinder("programForm")
@@ -171,6 +168,7 @@ public class ProgramController {
     public String getProgramDetailsPage(Model model, @PathVariable int programId) {
         model.addAttribute("allCategories", categoryManager.getAllCategories());
         model.addAttribute("programDetails", programManager.getProgramDetailsById(programId));
+        model.addAttribute("mainProgramsUrl", urlsHandler.getMainProgramsUrl());
         return PROGRAM_DETAILS_PAGE;
     }
 
@@ -181,18 +179,7 @@ public class ProgramController {
         response.setHeader("Content-Disposition", "attachment;filename=" + program.getName() +
                 programDownloadExtension);
 
-        URL downloadLink = null;
-        try {
-            URI uri = new URI(
-                    "http",
-                    programsMainUrlDomain,
-                    programsMainUrlPath + program.getName() + "/" + zipInnerAppFile,
-                    null);
-            downloadLink = uri.toURL();
-        } catch (URISyntaxException | MalformedURLException e) {
-            LOG.error("Failed to prepare file url: " + e.getMessage());
-        }
-
+        URL downloadLink = urlsHandler.getUrl(program.getId(), UrlType.PROGRAM_FILE);
         try (InputStream input = downloadLink.openStream()) {
             LOG.debug("Downloading program from link: " + downloadLink);
             IOUtils.copy(input, response.getOutputStream());

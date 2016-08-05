@@ -13,7 +13,7 @@
 
     <div class="row">
         <!-- Categories -->
-        <div class="col-xs-6 col-md-4">
+        <div class="col-xs-5 col-md-3">
             <div class="row">
                 <h4><a href="/">Home</a></h4>
                 <h4><a href="/submit">Submit new program</a></h4>

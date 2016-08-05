@@ -13,7 +13,7 @@
 
     <div class="row">
         <!-- Categories -->
-        <div class="col-xs-6 col-md-4">
+        <div class="col-xs-5 col-md-3">
             <div class="row">
                 <h4><a href="/">Home</a></h4>
                 <h4><a href="/submit">Submit new program</a></h4>
@@ -29,7 +29,6 @@
         <!-- Content -->
         <div class="col-xs-12 col-sm-6 col-md-8">
             <div id="programs-pagination">
-
 
                 <div class="dropdown text-align-right">
                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
@@ -47,8 +46,12 @@
                 <c:forEach items="${pageContent}" var="program">
                     <div id="program-item">
                         <h3><a href="${serviceServerPath}/details/${program.id}">${program.name}</a></h3>
-                        <p>${program.description}</p>
-                        <p>
+                        <div class="row">
+                            <img src="${mainProgramsUrl}/${program.name}/${program.img128}"
+                                 class="img-thumbnail img128">
+                                ${program.description}
+                        </div>
+                        <div class="row">
                             <span>
                                 <img src="${serviceServerPath}/resources/images/more.gif" alt="More details"/> <a
                                     href="${serviceServerPath}/details/${program.id}">More details</a>
@@ -65,7 +68,8 @@
                                 <img src="${serviceServerPath}/resources/images/category.gif"
                                      alt=""/> Time uploaded: ${program.timeUploaded}
                             </span>
-                        </p>
+                            <hr>
+                        </div>
                     </div>
                 </c:forEach>
 

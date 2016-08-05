@@ -41,6 +41,7 @@ TopDownloads.prototype = function () {
                     + '<a href="' + programDetailsUrl + '/' + program.id + '">'
                     + '<img src="' + programsUrl + encodeURIComponent(program.name) + '/' + encodeURIComponent(program.img512) + '">' + '<br/>'
                     + '</a>'
+                    + program.name + '<br/>'
                     + 'Downloads: ' + program.downloads
                     + '</div>';
             });

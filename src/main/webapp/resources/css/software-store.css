@@ -1,10 +1,10 @@
-.col-centered{
+.col-centered {
     float: none;
     margin: 0 auto;
 }
 
 .slick-slide {
-    height: 280px;
+    height: 350px;
 }
 
 .slick-slide img {
@@ -12,14 +12,37 @@
     height: 232px;
 }
 
-.slick-prev:before, .slick-next:before { font-family: "slick"; font-size: 40px; line-height: 1; color: #000000; opacity: 0.75; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.slick-prev:before, .slick-next:before {
+    font-family: "slick";
+    font-size: 40px;
+    line-height: 1;
+    color: #000000;
+    opacity: 0.75;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
-.slick-prev:before { content: "‹"; }
-[dir="rtl"] .slick-prev:before { content: "›"; }
+.slick-prev:before {
+    content: "‹";
+}
 
-[dir="rtl"] .slick-next { left: -10px; top: 70px; right: auto; }
-.slick-next:before { content: "›"; }
-[dir="rtl"] .slick-next:before { content: "‹"; }
+[dir="rtl"] .slick-prev:before {
+    content: "›";
+}
+
+[dir="rtl"] .slick-next {
+    left: -10px;
+    top: 70px;
+    right: auto;
+}
+
+.slick-next:before {
+    content: "›";
+}
+
+[dir="rtl"] .slick-next:before {
+    content: "‹";
+}
 
 .text-align-right {
     text-align: right;
@@ -27,4 +50,23 @@
 
 .text-align-center {
     text-align: center;
+}
+
+.img128 {
+    height: 128px;
+    width: 128px;
+    float: left;
+    margin: 10px;
+}
+
+.img512 {
+    height: 512px;
+    width: 512px;
+    float: left;
+    margin: 10px;
+}
+
+.img-text {
+    text-align: justify;
+    text-indent: 2em;
 }
