@@ -17,6 +17,7 @@ public class UrlsHandler {
 
     private static final Logger LOG = Logger.getLogger(UrlsHandler.class);
     private static final String PROTOCOL = "http";
+    private static final String BACKSLASH = "/";
     @Autowired
     private ProgramManager programManager;
     @Value("${programs.main.url.domain}")
@@ -27,6 +28,46 @@ public class UrlsHandler {
     private String programsDefaultImagesPath;
     @Value("${program.zip.inner.app.filename}")
     private String zipInnerAppFile;
+    @Value("${program.default.img128}")
+    private String defaultImg128;
+    @Value("${program.default.img512}")
+    private String defaultImg512;
+
+    public URL getUrl(Integer programId, UrlType urlType) {
+        ProgramDetailsDto programDetails = programManager.getProgramDetailsById(programId);
+        URI uri;
+        URL url = null;
+
+        try {
+            switch (urlType) {
+                case PROGRAM_FILE_DOWNLOAD_URL:
+                    uri = new URI(
+                            PROTOCOL,
+                            programsMainUrlDomain,
+                            programsMainUrlPath + programDetails.getName() + BACKSLASH + zipInnerAppFile,
+                            null);
+                    url = uri.toURL();
+                    break;
+
+                case IMAGE_128:
+                    // more logic; check if it's null
+                    // use Optional in ProgramDetailsDto for images;
+                    String path = programDetails.getImg128() == null ? programsDefaultImagesPath + BACKSLASH +
+                            defaultImg128 : programsDefaultImagesPath + BACKSLASH + programDetails.getImg128();
+
+                    uri = new URI(
+                            PROTOCOL,
+                            programsMainUrlDomain,
+                            path,
+                            null);
+                    url = uri.toURL();
+                    break;
+            }
+        } catch (URISyntaxException | MalformedURLException e) {
+            LOG.error("Failed to prepare url: " + e.getMessage());
+        }
+        return url;
+    }
 
     public URL getUrl(UrlType urlType) {
         URI uri;
