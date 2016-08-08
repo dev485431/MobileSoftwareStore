@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -25,20 +24,23 @@ public class DefaultExceptionHandler {
     private static final String DEFAULT_ERROR_VIEW = "error";
     private static final String VIEW_404 = "error404";
     private static final String SUBMIT_PROGRAM_VIEW = "submit";
-    private static final String REDIRECT_SUBMIT_FORM = "redirect:/submit";
     @Autowired
     private MessageSourceAccessor websiteMessages;
 
-    @ExceptionHandler(ProgramFileUploadException.class)
-    public String handleProgramFileUploadException(RedirectAttributes redirect) {
-        redirect.addFlashAttribute("errorMessage", websiteMessages.getMessage("exception.ftp.file.upload"));
-        return REDIRECT_SUBMIT_FORM;
+    @ExceptionHandler(ProgramFileProcessingException.class)
+    public RedirectView handleProgramFileProcessingExceptions(Exception ex, HttpServletRequest request) {
+        LOG.error("Exception while processing program zip file: " + ex.getMessage() + ". Url: " + request
+                .getRequestURL());
+        RedirectView rv = new RedirectView(SUBMIT_PROGRAM_VIEW);
+        FlashMap flashAttributes = RequestContextUtils.getOutputFlashMap(request);
+        flashAttributes.put("errorMessage", websiteMessages.getMessage("exception.file.processing"));
+        return rv;
     }
 
     @ExceptionHandler(MultipartException.class)
     public RedirectView handleMultipartException(Exception ex, HttpServletRequest request) {
-        RedirectView model = new RedirectView(SUBMIT_PROGRAM_VIEW);
-        FlashMap flash = RequestContextUtils.getOutputFlashMap(request);
+        RedirectView rv = new RedirectView(SUBMIT_PROGRAM_VIEW);
+        FlashMap flashAttributes = RequestContextUtils.getOutputFlashMap(request);
         MultipartException mEx = (MultipartException) ex;
 
         if (ex.getCause() instanceof FileUploadBase.FileSizeLimitExceededException) {
@@ -48,12 +50,12 @@ public class DefaultExceptionHandler {
             String message = websiteMessages.getMessage(
                     "error.file.maxsize",
                     new Object[]{flEx.getFileName(), permittedSize});
-            flash.put("fileError", message);
+            flashAttributes.put("fileError", message);
         } else {
-            flash.put("error", websiteMessages.getMessage("msg.contact.admin") +
+            flashAttributes.put("errorMessage", websiteMessages.getMessage("msg.contact.admin") +
                     ex.getMessage());
         }
-        return model;
+        return rv;
     }
 
     @ExceptionHandler(value = IOException.class)

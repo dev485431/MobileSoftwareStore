@@ -1,6 +1,6 @@
 package com.dataart.softwarestore.web;
 
-import com.dataart.softwarestore.exceptions.ProgramFileUploadException;
+import com.dataart.softwarestore.exceptions.ProgramFileProcessingException;
 import com.dataart.softwarestore.model.domain.Category;
 import com.dataart.softwarestore.model.domain.Program;
 import com.dataart.softwarestore.model.domain.Statistics;
@@ -8,7 +8,10 @@ import com.dataart.softwarestore.model.dto.ProgramForm;
 import com.dataart.softwarestore.model.dto.ProgramTextDetails;
 import com.dataart.softwarestore.service.CategoryManager;
 import com.dataart.softwarestore.service.ProgramManager;
-import com.dataart.softwarestore.utils.*;
+import com.dataart.softwarestore.utils.FtpTransferHandler;
+import com.dataart.softwarestore.utils.ProgramInfoHandler;
+import com.dataart.softwarestore.utils.ProgramZipFileHandler;
+import com.dataart.softwarestore.utils.UrlsHandler;
 import com.dataart.softwarestore.validation.AfterUploadFilesValidator;
 import com.dataart.softwarestore.validation.ProgramFormValidator;
 import com.dataart.softwarestore.validation.ProgramTextDetailsValidator;
@@ -117,7 +120,8 @@ public class ProgramController {
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     public String submitAddProgramForm(Model model, @ModelAttribute("programForm") @Valid ProgramForm programForm,
-                                       BindingResult result, RedirectAttributes redirect) throws ProgramFileUploadException {
+                                       BindingResult result, RedirectAttributes redirect) throws
+            ProgramFileProcessingException {
         model.addAttribute("allCategories", categoryManager.getAllCategories());
         model.addAttribute("maxFileSizeKb", uploadedFileMaxSizeBytes / FILE_SIZE_DIVIDER);
         if (result.hasErrors()) return PROGRAM_SUBMIT_PAGE;
@@ -195,5 +199,10 @@ public class ProgramController {
     public String removeProgram(@RequestParam("id") Integer id) {
         programManager.removeProgram(id);
         return "/";
+    }
+
+    @RequestMapping(value = "/ex", method = RequestMethod.GET)
+    public void exceptionTest() throws ProgramFileProcessingException {
+        throw new ProgramFileProcessingException("Failed to create directory for file upload");
     }
 }

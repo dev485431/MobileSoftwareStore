@@ -1,6 +1,6 @@
 package com.dataart.softwarestore.utils;
 
-import com.dataart.softwarestore.exceptions.ProgramFileUploadException;
+import com.dataart.softwarestore.exceptions.ProgramFileProcessingException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -20,10 +20,10 @@ public class ProgramZipFileHandler {
     private static final Logger LOG = Logger.getLogger(ProgramZipFileHandler.class);
 
     public File transferFileToDir(CommonsMultipartFile sourceFile, File targetDir) throws IOException,
-            ProgramFileUploadException {
+            ProgramFileProcessingException {
         if (!targetDir.exists()) {
             if (!targetDir.mkdir()) {
-                throw new ProgramFileUploadException("Failed to create directory for file upload");
+                throw new ProgramFileProcessingException("Failed to create directory for file upload");
             }
         }
         File targetFile = new File(targetDir, sourceFile.getOriginalFilename());
@@ -33,7 +33,7 @@ public class ProgramZipFileHandler {
     }
 
     public Map<String, File> extractZipFile(File file, File extractPath) throws IOException,
-            ProgramFileUploadException {
+            ProgramFileProcessingException {
         ZipFile zipFile = new ZipFile(file);
         Map<String, File> extractedEntries = new HashMap<>();
 
@@ -46,12 +46,15 @@ public class ProgramZipFileHandler {
 
                 if (entry.isDirectory()) {
                     if (!entryDestination.exists() && !entryDestination.mkdirs()) {
-                        throw new ProgramFileUploadException("Unable to extract directory from zip file");
+                        throw new ProgramFileProcessingException("Unable to extract directory from zip file: " + entry
+                                .getName());
                     }
                 } else {
                     if (entryDestination.getParentFile() != null) {
                         if (!entryDestination.getParentFile().exists() && !entryDestination.getParentFile().mkdirs()) {
-                            throw new ProgramFileUploadException("Unable to create directory for file extraction");
+                            throw new ProgramFileProcessingException("Unable to create directory for file extraction:" +
+                                    " " +
+                                    entryDestination.getName());
                         }
                     }
                     InputStream in = zipFile.getInputStream(entry);
