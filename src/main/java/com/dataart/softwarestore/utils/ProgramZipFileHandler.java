@@ -37,35 +37,30 @@ public class ProgramZipFileHandler {
         ZipFile zipFile = new ZipFile(file);
         Map<String, File> extractedEntries = new HashMap<>();
 
-        try {
-            Enumeration<? extends ZipEntry> entries = zipFile.entries();
-            while (entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
-                File entryDestination = new File(extractPath, entry.getName());
-                extractedEntries.put(entry.getName(), entryDestination);
+        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        while (entries.hasMoreElements()) {
+            ZipEntry entry = entries.nextElement();
+            File entryDestination = new File(extractPath, entry.getName());
+            extractedEntries.put(entry.getName(), entryDestination);
 
-                if (entry.isDirectory()) {
-                    if (!entryDestination.exists() && !entryDestination.mkdirs()) {
-                        throw new ProgramFileProcessingException("Unable to extract directory from zip file: " + entry
-                                .getName());
-                    }
-                } else {
-                    if (entryDestination.getParentFile() != null) {
-                        if (!entryDestination.getParentFile().exists() && !entryDestination.getParentFile().mkdirs()) {
-                            throw new ProgramFileProcessingException("Unable to create directory for file extraction:" +
-                                    " " + entryDestination.getName());
-                        }
-                    }
-
-                    InputStream in = zipFile.getInputStream(entry);
-                    try (OutputStream out = new FileOutputStream(entryDestination)) {
-                        IOUtils.copy(in, out);
-                        IOUtils.closeQuietly(in);
+            if (entry.isDirectory()) {
+                if (!entryDestination.exists() && !entryDestination.mkdirs()) {
+                    throw new ProgramFileProcessingException("Unable to extract directory from zip file: " + entry
+                            .getName());
+                }
+            } else {
+                if (entryDestination.getParentFile() != null) {
+                    if (!entryDestination.getParentFile().exists() && !entryDestination.getParentFile().mkdirs()) {
+                        throw new ProgramFileProcessingException("Unable to create directory for file extraction:" +
+                                " " + entryDestination.getName());
                     }
                 }
+
+                try (InputStream in = zipFile.getInputStream(entry); OutputStream out = new FileOutputStream
+                        (entryDestination)) {
+                    IOUtils.copy(in, out);
+                }
             }
-        } finally {
-            zipFile.close();
         }
         return extractedEntries;
     }

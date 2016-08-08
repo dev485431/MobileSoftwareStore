@@ -62,7 +62,7 @@ public class DefaultExceptionHandler {
     public RedirectView handleIOException(Exception ex, HttpServletRequest request) {
         RedirectView model = new RedirectView(SUBMIT_PROGRAM_VIEW);
         FlashMap flash = RequestContextUtils.getOutputFlashMap(request);
-        flash.put("fileError", websiteMessages.getMessage("error.file.io") + ex
+        flash.put("errorMessage", websiteMessages.getMessage("error.file.io") + ex
                 .getMessage());
         return model;
     }
