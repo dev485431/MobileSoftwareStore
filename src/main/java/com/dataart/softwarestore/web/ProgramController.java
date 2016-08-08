@@ -8,10 +8,7 @@ import com.dataart.softwarestore.model.dto.ProgramForm;
 import com.dataart.softwarestore.model.dto.ProgramTextDetails;
 import com.dataart.softwarestore.service.CategoryManager;
 import com.dataart.softwarestore.service.ProgramManager;
-import com.dataart.softwarestore.utils.FtpTransferHandler;
-import com.dataart.softwarestore.utils.ProgramInfoHandler;
-import com.dataart.softwarestore.utils.ProgramZipFileHandler;
-import com.dataart.softwarestore.utils.UrlsHandler;
+import com.dataart.softwarestore.utils.*;
 import com.dataart.softwarestore.validation.AfterUploadFilesValidator;
 import com.dataart.softwarestore.validation.ProgramFormValidator;
 import com.dataart.softwarestore.validation.ProgramTextDetailsValidator;
@@ -80,6 +77,8 @@ public class ProgramController {
     private String programDownloadMimeType;
     @Value("${program.file.download.extension}")
     private String programDownloadExtension;
+    @Value("${program.default.img512}")
+    private String defaultImg512;
 
 
     @Autowired
@@ -174,7 +173,9 @@ public class ProgramController {
     public String getProgramDetailsPage(Model model, @PathVariable int programId) {
         model.addAttribute("allCategories", categoryManager.getAllCategories());
         model.addAttribute("programDetails", programManager.getProgramDetailsById(programId));
-        model.addAttribute("mainProgramsUrl", urlsHandler.getMainProgramsUrl());
+        model.addAttribute("mainProgramsUrl", urlsHandler.getUrl(UrlType.MAIN_PROGRAMS_URL));
+        model.addAttribute("defaultImagesUrl", urlsHandler.getUrl(UrlType.DEFAULT_IMAGES_URL));
+        model.addAttribute("defaultImage512", defaultImg512);
         return PROGRAM_DETAILS_PAGE;
     }
 

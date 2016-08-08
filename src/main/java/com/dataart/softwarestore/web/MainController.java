@@ -2,6 +2,7 @@ package com.dataart.softwarestore.web;
 
 import com.dataart.softwarestore.service.CategoryManager;
 import com.dataart.softwarestore.service.PaginationManager;
+import com.dataart.softwarestore.utils.UrlType;
 import com.dataart.softwarestore.utils.UrlsHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,8 @@ public class MainController {
     Integer defaultItemsPerPage;
     @Value("${pagination.items.per.page.options}")
     private int[] itemsPerPageOptions;
+    @Value("${program.default.img128}")
+    private String defaultImg128;
 
     @Autowired
     public MainController(CategoryManager categoryManager, PaginationManager paginationManager, UrlsHandler
@@ -48,7 +51,9 @@ public class MainController {
         model.addAttribute("itemsPerPage", itemsPerPage);
         model.addAttribute("itemsPerPageOptions", itemsPerPageOptions);
         model.addAttribute("maxPage", paginationManager.getMaxPageForCategory(categoryId, itemsPerPage));
-        model.addAttribute("mainProgramsUrl", urlsHandler.getMainProgramsUrl());
+        model.addAttribute("mainProgramsUrl", urlsHandler.getUrl(UrlType.MAIN_PROGRAMS_URL));
+        model.addAttribute("defaultImagesUrl", urlsHandler.getUrl(UrlType.DEFAULT_IMAGES_URL));
+        model.addAttribute("defaultImage128", defaultImg128);
         model.addAttribute("pageContent", paginationManager.getPage(pageNumber, categoryId, itemsPerPage));
         return MAIN_PAGE;
     }

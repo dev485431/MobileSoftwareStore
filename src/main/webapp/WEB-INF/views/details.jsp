@@ -32,8 +32,17 @@
         </div>
         <br/>
         <div class="row">
-            <img src="${mainProgramsUrl}/${programDetails.name}/${programDetails.img512}"
-                 class="img-thumbnail img512">
+            <c:choose>
+                <c:when test="${not empty programDetails.img512}">
+                    <img src="${mainProgramsUrl}/${programDetails.name}/${programDetails.img512}"
+                         class="img-thumbnail img512">
+                </c:when>
+                <c:otherwise>
+                    <img src="${defaultImagesUrl}/${defaultImage512}"
+                         class="img-thumbnail img512">
+                </c:otherwise>
+            </c:choose>
+
             ${programDetails.description}
         </div>
         <br/>
@@ -65,7 +74,7 @@
         <br/>
 
     </div>
-    
+
 </div>
 
 <%@include file="/WEB-INF/common/footer.jsp" %>

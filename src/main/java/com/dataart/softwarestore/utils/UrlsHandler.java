@@ -16,27 +16,44 @@ import java.net.URL;
 public class UrlsHandler {
 
     private static final Logger LOG = Logger.getLogger(UrlsHandler.class);
+    private static final String PROTOCOL = "http";
     @Autowired
     private ProgramManager programManager;
     @Value("${programs.main.url.domain}")
     private String programsMainUrlDomain;
     @Value("${programs.main.url.path}")
     private String programsMainUrlPath;
+    @Value("${program.default.images.path}")
+    private String programsDefaultImagesPath;
     @Value("${program.zip.inner.app.filename}")
     private String zipInnerAppFile;
 
-    public URL getMainProgramsUrl() {
+    public URL getUrl(UrlType urlType) {
+        URI uri;
         URL url = null;
+
         try {
-            URI uri = new URI(
-                    "http",
-                    programsMainUrlDomain,
-                    programsMainUrlPath,
-                    null);
-            url = uri.toURL();
-            LOG.debug("Main programs url is: " + url);
+            switch (urlType) {
+                case MAIN_PROGRAMS_URL:
+                    uri = new URI(
+                            PROTOCOL,
+                            programsMainUrlDomain,
+                            programsMainUrlPath,
+                            null);
+                    url = uri.toURL();
+                    break;
+
+                case DEFAULT_IMAGES_URL:
+                    uri = new URI(
+                            PROTOCOL,
+                            programsMainUrlDomain,
+                            programsDefaultImagesPath,
+                            null);
+                    url = uri.toURL();
+                    break;
+            }
         } catch (URISyntaxException | MalformedURLException e) {
-            LOG.error("Failed to prepare main programs url: " + e.getMessage());
+            LOG.error("Failed to prepare url: " + e.getMessage());
         }
         return url;
     }
@@ -48,7 +65,7 @@ public class UrlsHandler {
             URI uri = new URI(
                     "http",
                     programsMainUrlDomain,
-                    programsMainUrlPath + programDetails.getName() + "/" + zipInnerAppFile,
+                    programsDefaultImagesPath + programDetails.getName() + "/" + zipInnerAppFile,
                     null);
             url = uri.toURL();
             LOG.debug("Prepared program download url: " + url);
