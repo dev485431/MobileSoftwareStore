@@ -1,5 +1,6 @@
 package com.dataart.softwarestore.web;
 
+import com.dataart.softwarestore.exceptions.ProgramFileUploadException;
 import com.dataart.softwarestore.model.domain.Category;
 import com.dataart.softwarestore.model.domain.Program;
 import com.dataart.softwarestore.model.domain.Statistics;
@@ -116,7 +117,7 @@ public class ProgramController {
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     public String submitAddProgramForm(Model model, @ModelAttribute("programForm") @Valid ProgramForm programForm,
-                                       BindingResult result, RedirectAttributes redirect) {
+                                       BindingResult result, RedirectAttributes redirect) throws ProgramFileUploadException {
         model.addAttribute("allCategories", categoryManager.getAllCategories());
         model.addAttribute("maxFileSizeKb", uploadedFileMaxSizeBytes / FILE_SIZE_DIVIDER);
         if (result.hasErrors()) return PROGRAM_SUBMIT_PAGE;

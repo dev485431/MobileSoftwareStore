@@ -13,14 +13,10 @@ public class AfterUploadFilesValidator {
     public boolean areThereEmptyFiles(Map<String, File> files) throws IOException {
         for (Map.Entry<String, File> file : files.entrySet()) {
 
-            FileInputStream fis = null;
-            try {
-                fis = new FileInputStream(file.getValue().getAbsolutePath());
+            try (FileInputStream fis = new FileInputStream(file.getValue().getAbsolutePath())) {
                 if (fis.available() == 0) {
                     return true;
                 }
-            } finally {
-                fis.close();
             }
         }
         return false;

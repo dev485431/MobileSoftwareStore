@@ -29,6 +29,7 @@
         <commons-net-version>3.5</commons-net-version>
         <maven-compiler-plugin-version>3.5.1</maven-compiler-plugin-version>
         <maven-war-plugin-version>2.6</maven-war-plugin-version>
+        <maven-pmd-plugin-version>3.6</maven-pmd-plugin-version>
     </properties>
 
     <dependencies>
@@ -143,7 +144,6 @@
 
     <build>
         <plugins>
-
             <!-- Compiler -->
 
             <plugin>

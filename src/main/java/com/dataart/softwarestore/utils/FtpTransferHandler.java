@@ -46,11 +46,13 @@ public class FtpTransferHandler {
 
         for (Map.Entry<String, File> file : files.entrySet()) {
             LOG.debug("Transferring file by ftp: " + file);
-            InputStream in = new FileInputStream(file.getValue());
-            if (!ftp.storeFile(targetUploadPath + "/" + file.getValue().getName(), in)) {
-                LOG.error("Ftp file transfer failed: " + ftp.getReplyString());
+            try (InputStream in = new FileInputStream(file.getValue())) {
+                if (!ftp.storeFile(targetUploadPath + "/" + file.getValue().getName(), in)) {
+                    LOG.error("Ftp file transfer failed: " + ftp.getReplyString());
+                }
+            } catch (IOException e) {
+                LOG.error("Failed to transfer file: " + e.getMessage());
             }
-            in.close();
         }
         ftp.disconnect();
     }

@@ -1,5 +1,6 @@
 package com.dataart.softwarestore.utils;
 
+import com.dataart.softwarestore.exceptions.ProgramFileUploadException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -7,7 +8,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -16,15 +19,21 @@ public class ProgramZipFileHandler {
 
     private static final Logger LOG = Logger.getLogger(ProgramZipFileHandler.class);
 
-    public File transferFileToDir(CommonsMultipartFile sourceFile, File targetDir) throws IOException {
-        if (!targetDir.exists()) targetDir.mkdir();
+    public File transferFileToDir(CommonsMultipartFile sourceFile, File targetDir) throws IOException,
+            ProgramFileUploadException {
+        if (!targetDir.exists()) {
+            if (!targetDir.mkdir()) {
+                throw new ProgramFileUploadException("Failed to create directory for file upload");
+            }
+        }
         File targetFile = new File(targetDir, sourceFile.getOriginalFilename());
         LOG.debug("Transferring program file to: " + targetFile.getAbsolutePath());
         sourceFile.transferTo(targetFile);
         return targetFile;
     }
 
-    public Map<String, File> extractZipFile(File file, File extractPath) throws IOException {
+    public Map<String, File> extractZipFile(File file, File extractPath) throws IOException,
+            ProgramFileUploadException {
         ZipFile zipFile = new ZipFile(file);
         Map<String, File> extractedEntries = new HashMap<>();
 
@@ -36,9 +45,15 @@ public class ProgramZipFileHandler {
                 extractedEntries.put(entry.getName(), entryDestination);
 
                 if (entry.isDirectory()) {
-                    entryDestination.mkdirs();
+                    if (!entryDestination.exists() && !entryDestination.mkdirs()) {
+                        throw new ProgramFileUploadException("Unable to extract directory from zip file");
+                    }
                 } else {
-                    entryDestination.getParentFile().mkdirs();
+                    if (entryDestination.getParentFile() != null) {
+                        if (!entryDestination.getParentFile().exists() && !entryDestination.getParentFile().mkdirs()) {
+                            throw new ProgramFileUploadException("Unable to create directory for file extraction");
+                        }
+                    }
                     InputStream in = zipFile.getInputStream(entry);
                     OutputStream out = new FileOutputStream(entryDestination);
                     IOUtils.copy(in, out);
@@ -59,7 +74,8 @@ public class ProgramZipFileHandler {
                 try {
                     FileUtils.forceDelete(file);
                 } catch (IOException e) {
-                    LOG.error("Unable to remove file or dir: " + file.getAbsolutePath() + ", Error msg: " + e.getMessage());
+                    LOG.error("Unable to remove file or dir: " + file.getAbsolutePath() + ", Error msg: " + e
+                            .getMessage());
                 }
             }
         }
