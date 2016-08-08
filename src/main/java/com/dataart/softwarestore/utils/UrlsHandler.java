@@ -65,7 +65,7 @@ public class UrlsHandler {
             URI uri = new URI(
                     "http",
                     programsMainUrlDomain,
-                    programsDefaultImagesPath + programDetails.getName() + "/" + zipInnerAppFile,
+                    programsMainUrlPath + programDetails.getName() + "/" + zipInnerAppFile,
                     null);
             url = uri.toURL();
             LOG.debug("Prepared program download url: " + url);
