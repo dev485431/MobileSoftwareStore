@@ -58,7 +58,7 @@ public class DefaultExceptionHandler {
         return rv;
     }
 
-    @ExceptionHandler(value = IOException.class)
+    @ExceptionHandler(IOException.class)
     public RedirectView handleIOException(Exception ex, HttpServletRequest request) {
         RedirectView model = new RedirectView(SUBMIT_PROGRAM_VIEW);
         FlashMap flash = RequestContextUtils.getOutputFlashMap(request);

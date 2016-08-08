@@ -53,15 +53,15 @@ public class ProgramZipFileHandler {
                     if (entryDestination.getParentFile() != null) {
                         if (!entryDestination.getParentFile().exists() && !entryDestination.getParentFile().mkdirs()) {
                             throw new ProgramFileProcessingException("Unable to create directory for file extraction:" +
-                                    " " +
-                                    entryDestination.getName());
+                                    " " + entryDestination.getName());
                         }
                     }
+
                     InputStream in = zipFile.getInputStream(entry);
-                    OutputStream out = new FileOutputStream(entryDestination);
-                    IOUtils.copy(in, out);
-                    IOUtils.closeQuietly(in);
-                    out.close();
+                    try (OutputStream out = new FileOutputStream(entryDestination)) {
+                        IOUtils.copy(in, out);
+                        IOUtils.closeQuietly(in);
+                    }
                 }
             }
         } finally {
