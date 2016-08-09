@@ -1,5 +1,6 @@
 package com.dataart.softwarestore.web;
 
+import com.dataart.softwarestore.exceptions.FtpException;
 import com.dataart.softwarestore.exceptions.ProgramFileProcessingException;
 import com.dataart.softwarestore.model.domain.Category;
 import com.dataart.softwarestore.model.domain.Program;
@@ -124,7 +125,7 @@ public class ProgramController {
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     public String submitAddProgramForm(Model model, @ModelAttribute("programForm") @Valid ProgramForm programForm,
                                        BindingResult result, RedirectAttributes redirect) throws
-            ProgramFileProcessingException {
+            ProgramFileProcessingException, FtpException {
         model.addAttribute("allCategories", categoryManager.getAllCategories());
         model.addAttribute("maxFileSizeKb", uploadedFileMaxSizeBytes / FILE_SIZE_DIVIDER);
         model.addAttribute("requiredInnerFiles", zipFileRequiredInnerFiles);
@@ -206,7 +207,7 @@ public class ProgramController {
     }
 
     @RequestMapping(value = "/ex", method = RequestMethod.GET)
-    public void exceptionTest() throws ProgramFileProcessingException {
-        throw new ProgramFileProcessingException("Failed to create directory for file upload");
+    public void exceptionTest() throws FtpException {
+        throw new FtpException("Failed to create directory for file upload");
     }
 }

@@ -27,13 +27,17 @@ public class DefaultExceptionHandler {
     @Autowired
     private MessageSourceAccessor websiteMessages;
 
-    @ExceptionHandler(ProgramFileProcessingException.class)
-    public RedirectView handleProgramFileProcessingExceptions(Exception ex, HttpServletRequest request) {
-        LOG.error("Exception while processing program zip file: " + ex.getMessage() + ". Url: " + request
+    @ExceptionHandler({ProgramFileProcessingException.class, FtpException.class})
+    public RedirectView handleProgramFileUploadExceptions(Exception ex, HttpServletRequest request) {
+        LOG.error("Exception while processing program file: " + ex.getMessage() + ". Url: " + request
                 .getRequestURL());
         RedirectView rv = new RedirectView(SUBMIT_PROGRAM_VIEW);
         FlashMap flashAttributes = RequestContextUtils.getOutputFlashMap(request);
-        flashAttributes.put("errorMessage", websiteMessages.getMessage("exception.file.processing"));
+        if (ex instanceof FtpException) {
+            flashAttributes.put("errorMessage", websiteMessages.getMessage("exception.file.ftp.upload"));
+        } else {
+            flashAttributes.put("errorMessage", websiteMessages.getMessage("exception.file.processing"));
+        }
         return rv;
     }
 
