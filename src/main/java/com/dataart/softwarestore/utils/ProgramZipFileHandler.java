@@ -62,6 +62,7 @@ public class ProgramZipFileHandler {
                 }
             }
         }
+        zipFile.close();
         return extractedEntries;
     }
 

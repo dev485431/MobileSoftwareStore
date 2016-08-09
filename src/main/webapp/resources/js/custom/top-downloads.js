@@ -39,7 +39,7 @@ TopDownloads.prototype = function () {
             $.each(data, function (index, program) {
                 html += '<div>'
                     + '<a href="' + programDetailsUrl + '/' + program.id + '">'
-                    + '<img src="' + programsUrl + encodeURIComponent(program.name) + '/' + encodeURIComponent(program.img512) + '">' + '<br/>'
+                    + '<img src="' + program.img512Url + '">' + '<br/>'
                     + '</a>'
                     + program.name + '<br/>'
                     + 'Downloads: ' + program.downloads

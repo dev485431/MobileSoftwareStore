@@ -4,6 +4,8 @@ import com.dataart.softwarestore.model.domain.Program;
 import com.dataart.softwarestore.model.dto.ProgramDetailsDto;
 import com.dataart.softwarestore.service.MostPopularManager;
 import com.dataart.softwarestore.service.QueryResultsOrder;
+import com.dataart.softwarestore.utils.ImageUrlType;
+import com.dataart.softwarestore.utils.UrlsHandler;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,6 +23,8 @@ public class HibernateMostPopularManager implements MostPopularManager {
 
     @Autowired
     private SessionFactory sessionFactory;
+    @Autowired
+    private UrlsHandler urlsHandler;
     @Value("${popular.item.date.format}")
     private String popularItemDateFormat;
 
@@ -44,8 +48,12 @@ public class HibernateMostPopularManager implements MostPopularManager {
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(popularItemDateFormat);
         return programs.stream().map(program -> new ProgramDetailsDto(program.getId(), program.getName(), program
-                .getDescription(), program.getImg128(), program.getImg512(), program.getCategory().getName(), program
-                .getStatistics().getTimeUploaded().format(dateFormat), program.getStatistics().getDownloads()))
+                .getDescription(),
+                urlsHandler.getImageUrl(program, ImageUrlType.IMAGE_128),
+                urlsHandler.getImageUrl(program, ImageUrlType.IMAGE_512),
+                urlsHandler.getProgramDownloadUrl(program),
+                program.getCategory().getName(), program.getStatistics().getTimeUploaded()
+                .format(dateFormat), program.getStatistics().getDownloads()))
                 .collect(Collectors.toList());
     }
 

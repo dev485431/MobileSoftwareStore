@@ -1,7 +1,7 @@
 package com.dataart.softwarestore.model.domain;
 
 import javax.persistence.*;
-import java.util.Map;
+import java.util.Optional;
 
 @Entity
 @Table(name = "programs")
@@ -27,7 +27,8 @@ public class Program {
     public Program() {
     }
 
-    public Program(String name, String description, String img128, String img512, Category category, Statistics statistics) {
+    public Program(String name, String description, String img128, String img512, Category category, Statistics
+            statistics) {
         this.name = name;
         this.description = description;
         this.img128 = img128;
@@ -60,16 +61,16 @@ public class Program {
         this.description = description;
     }
 
-    public String getImg128() {
-        return img128;
+    public Optional<String> getImg128() {
+        return Optional.ofNullable(img128);
     }
 
     public void setImg128(String img128) {
         this.img128 = img128;
     }
 
-    public String getImg512() {
-        return img512;
+    public Optional<String> getImg512() {
+        return Optional.ofNullable(img512);
     }
 
     public void setImg512(String img512) {

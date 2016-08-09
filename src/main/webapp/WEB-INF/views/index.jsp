@@ -48,18 +48,10 @@
                         <h3><a href="${serviceServerPath}/details/${program.id}">${program.name}</a></h3>
                         <div class="row">
 
-                            <c:choose>
-                                <c:when test="${not empty program.img128}">
-                                    <img src="${mainProgramsUrl}/${program.name}/${program.img128}"
-                                         class="img-thumbnail img128">
-                                </c:when>
-                                <c:otherwise>
-                                    <img src="${defaultImagesUrl}/${defaultImage128}"
-                                         class="img-thumbnail img128">
-                                </c:otherwise>
-                            </c:choose>
+                            <img src="${program.img128Url}" class="img-thumbnail img128">
 
                                 ${program.description}
+
                         </div>
                         <div class="row">
                             <span>
