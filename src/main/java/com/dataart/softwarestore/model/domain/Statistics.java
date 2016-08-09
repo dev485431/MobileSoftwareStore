@@ -2,7 +2,7 @@ package com.dataart.softwarestore.model.domain;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "statistics")
@@ -15,6 +15,10 @@ public class Statistics {
     @Column(name = "time_uploaded")
     private OffsetDateTime timeUploaded;
     private Long downloads;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "statistics_id", referencedColumnName = "id")
+    private List<Rating> ratings;
 
     public Statistics() {
     }
