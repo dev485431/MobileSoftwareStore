@@ -200,14 +200,4 @@ public class ProgramController {
         programManager.incrementDownloads(programId);
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.GET)
-    public String removeProgram(@RequestParam("id") Integer id) {
-        programManager.removeProgram(id);
-        return "/";
-    }
-
-    @RequestMapping(value = "/ex", method = RequestMethod.GET)
-    public void exceptionTest() throws FtpException {
-        throw new FtpException("Failed to create directory for file upload");
-    }
 }

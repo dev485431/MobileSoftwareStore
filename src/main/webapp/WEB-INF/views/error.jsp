@@ -2,9 +2,8 @@
 <%@include file="/WEB-INF/common/header.jsp" %>
 
 <div class="container" align="center">
-    <h1>Our application encountered an error</h1>
-    ${exception.message}<br>
-    Please contact your administrator<br>
+    <h1>Our application encountered an error</h1><br/>
+    Please contact the administrator<br/><br/>
     <a href="/">Go back to the main page</a>
 
 </div>
