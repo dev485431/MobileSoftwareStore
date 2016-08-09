@@ -9,19 +9,17 @@ public class ProgramDetailsDto {
     private String description;
     private URL img128Url;
     private URL img512Url;
-    private URL downloadUrl;
     private String categoryName;
     private String timeUploaded;
     private Long downloads;
 
-    public ProgramDetailsDto(Integer id, String name, String description, URL img128Url, URL img512Url, URL
-            downloadUrl, String categoryName, String timeUploaded, Long downloads) {
+    public ProgramDetailsDto(Integer id, String name, String description, URL img128Url, URL img512Url, String
+            categoryName, String timeUploaded, Long downloads) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.img128Url = img128Url;
         this.img512Url = img512Url;
-        this.downloadUrl = downloadUrl;
         this.categoryName = categoryName;
         this.timeUploaded = timeUploaded;
         this.downloads = downloads;
@@ -66,15 +64,7 @@ public class ProgramDetailsDto {
     public void setImg512Url(URL img512Url) {
         this.img512Url = img512Url;
     }
-
-    public URL getDownloadUrl() {
-        return downloadUrl;
-    }
-
-    public void setDownloadUrl(URL downloadUrl) {
-        this.downloadUrl = downloadUrl;
-    }
-
+    
     public String getCategoryName() {
         return categoryName;
     }

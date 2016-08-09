@@ -58,7 +58,6 @@ public class HibernateProgramManager implements ProgramManager {
         return new ProgramDetailsDto(program.getId(), program.getName(), program.getDescription(),
                 urlsHandler.getImageUrl(program, ImageUrlType.IMAGE_128),
                 urlsHandler.getImageUrl(program, ImageUrlType.IMAGE_512),
-                urlsHandler.getProgramDownloadUrl(program),
                 program.getCategory().getName(), program.getStatistics().getTimeUploaded()
                 .format(dateFormat), program.getStatistics().getDownloads());
     }

@@ -127,6 +127,8 @@ public class ProgramController {
             ProgramFileProcessingException {
         model.addAttribute("allCategories", categoryManager.getAllCategories());
         model.addAttribute("maxFileSizeKb", uploadedFileMaxSizeBytes / FILE_SIZE_DIVIDER);
+        model.addAttribute("requiredInnerFiles", zipFileRequiredInnerFiles);
+        model.addAttribute("uploadedFileExtension", uploadedFileExtension);
         if (result.hasErrors()) return PROGRAM_SUBMIT_PAGE;
 
         File uploadedZipFile = null;

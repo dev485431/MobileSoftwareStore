@@ -57,7 +57,6 @@ public class HibernatePaginationManager implements PaginationManager {
                 .getDescription(),
                 urlsHandler.getImageUrl(program, ImageUrlType.IMAGE_128),
                 urlsHandler.getImageUrl(program, ImageUrlType.IMAGE_512),
-                urlsHandler.getProgramDownloadUrl(program),
                 program.getCategory().getName(), program.getStatistics().getTimeUploaded()
                 .format(dateFormat), program.getStatistics().getDownloads()))
                 .collect(Collectors.toList());
