@@ -1,6 +1,7 @@
 package com.dataart.softwarestore.model.domain;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 @Table(name = "ratings")
@@ -12,10 +13,11 @@ public class Rating {
 
     private Float rating;
 
-    @Column(name = "statistics_id")
-    private Integer statisticsId;
-
     public Rating() {
+    }
+
+    public Rating(Float rating) {
+        this.rating = rating;
     }
 
     public Integer getId() {
@@ -26,19 +28,12 @@ public class Rating {
         this.id = id;
     }
 
-    public Float getRating() {
-        return rating;
+    public Optional<Float> getRating() {
+        return Optional.ofNullable(rating);
     }
 
     public void setRating(Float rating) {
         this.rating = rating;
     }
 
-    public Integer getStatisticsId() {
-        return statisticsId;
-    }
-
-    public void setStatisticsId(Integer statisticsId) {
-        this.statisticsId = statisticsId;
-    }
 }
