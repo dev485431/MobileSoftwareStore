@@ -20,7 +20,7 @@ public class Category {
 
     public Category() {
     }
-    
+
     public Category(String name, String description) {
         this.name = name;
         this.description = description;
@@ -48,5 +48,14 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
