@@ -3,8 +3,10 @@
 <script src="${serviceServerPath}/resources/js/jquery-ui.min.js"></script>
 <script src="${serviceServerPath}/resources/js/bootstrap.min.js"></script>
 <script src="${serviceServerPath}/resources/js/slick/slick.min.js"></script>
+<script src="${serviceServerPath}/resources/js/jquery.rateyo.min.js"></script>
 
 <script src="${serviceServerPath}/resources/js/custom/top-downloads.js"></script>
+<script src="${serviceServerPath}/resources/js/custom/rating.js"></script>
 <script src="${serviceServerPath}/resources/js/custom/init.js"></script>
 
 

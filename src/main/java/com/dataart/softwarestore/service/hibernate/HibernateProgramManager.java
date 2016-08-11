@@ -4,6 +4,7 @@ import com.dataart.softwarestore.model.domain.Program;
 import com.dataart.softwarestore.model.dto.ProgramDetailsDto;
 import com.dataart.softwarestore.service.ProgramManager;
 import com.dataart.softwarestore.utils.ImageUrlType;
+import com.dataart.softwarestore.utils.RatingsHandler;
 import com.dataart.softwarestore.utils.UrlsHandler;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,6 +23,8 @@ public class HibernateProgramManager implements ProgramManager {
     private SessionFactory sessionFactory;
     @Autowired
     private UrlsHandler urlsHandler;
+    @Autowired
+    private RatingsHandler ratingsHandler;
     @Value("${program.details.date.format}")
     private String programDetailsDateFormat;
 
@@ -55,11 +58,14 @@ public class HibernateProgramManager implements ProgramManager {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(programDetailsDateFormat);
         Program program = (Program) session().createQuery("from Program where id=:id").setParameter("id", id)
                 .uniqueResult();
-        return new ProgramDetailsDto(program.getId(), program.getName(), program.getDescription(),
+        return new ProgramDetailsDto(program.getId(), program.getName(),
+                program.getDescription(),
                 urlsHandler.getImageUrl(program, ImageUrlType.IMAGE_128),
                 urlsHandler.getImageUrl(program, ImageUrlType.IMAGE_512),
-                program.getCategory().getName(), program.getStatistics().getTimeUploaded()
-                .format(dateFormat), program.getStatistics().getDownloads());
+                program.getCategory().getName(),
+                program.getStatistics().getTimeUploaded().format(dateFormat),
+                program.getStatistics().getDownloads(),
+                ratingsHandler.getAverageRating(program.getStatistics().getRatings()));
     }
 
     @Override

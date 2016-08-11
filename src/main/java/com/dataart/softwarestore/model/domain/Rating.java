@@ -13,6 +13,10 @@ public class Rating {
 
     private Float rating;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "statistics_id")
+    private Statistics statistics;
+
     public Rating() {
     }
 
@@ -36,4 +40,18 @@ public class Rating {
         this.rating = rating;
     }
 
+    public Statistics getStatistics() {
+        return statistics;
+    }
+
+    public void setStatistics(Statistics statistics) {
+        this.statistics = statistics;
+    }
+
+    @Override
+    public String toString() {
+        return "Rating{" +
+                "rating=" + rating +
+                '}';
+    }
 }

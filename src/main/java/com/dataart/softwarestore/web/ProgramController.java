@@ -87,8 +87,7 @@ public class ProgramController {
 
     @Autowired
     public ProgramController(HttpServletRequest servletRequest, MessageSourceAccessor websiteMessages, ProgramManager
-            programManager,
-                             CategoryManager categoryManager, ProgramFormValidator programFormValidator,
+            programManager, CategoryManager categoryManager, ProgramFormValidator programFormValidator,
                              AfterUploadFilesValidator afterUploadFilesValidator,
                              ProgramZipFileHandler programZipFileHandler, ProgramInfoHandler programInfoHandler,
                              ProgramTextDetailsValidator programTextDetailsValidator,
@@ -164,7 +163,7 @@ public class ProgramController {
             programZipFileHandler.batchRemoveFiles(uploadedZipFile, extractPath);
         }
 
-        LOG.debug("Adding new program: " + programForm.toString());
+        LOG.debug("Adding new program: " + programForm);
         Category category = categoryManager.getCategoryById(programForm.getCategoryId());
         Statistics statistics = new Statistics(OffsetDateTime.now(), INITIAL_DOWNLOADS);
         Program newProgram = new Program(programForm.getName(), programForm.getDescription(), programTextDetails

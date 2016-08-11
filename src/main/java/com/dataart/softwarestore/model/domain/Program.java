@@ -92,4 +92,17 @@ public class Program {
     public void setStatistics(Statistics statistics) {
         this.statistics = statistics;
     }
+
+    @Override
+    public String toString() {
+        return "Program{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", img128='" + img128 + '\'' +
+                ", img512='" + img512 + '\'' +
+                ", category=" + category +
+                ", statistics=" + statistics +
+                '}';
+    }
 }

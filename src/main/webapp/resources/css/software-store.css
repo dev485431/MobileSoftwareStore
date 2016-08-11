@@ -70,3 +70,7 @@
     text-align: justify;
     text-indent: 2em;
 }
+
+.hidden {
+    display: none;
+}

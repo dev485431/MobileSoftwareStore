@@ -11,8 +11,7 @@ TopDownloads.prototype = function () {
         programDetailsUrl = '/details',
         restApiUrl = '/rest/top/get',
         errorMsg = 'Top downloads unavailable',
-        timeout = 5000,
-        fadeInMs = 500,
+        timeout = 10000,
 
         init = function () {
             topDownloadsLoader.show();

@@ -2,6 +2,7 @@ package com.dataart.softwarestore.web;
 
 import com.dataart.softwarestore.service.CategoryManager;
 import com.dataart.softwarestore.service.PaginationManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class MainController {
 
+    private static final Logger LOG = Logger.getLogger(MainController.class);
     private static final String MAIN_PAGE = "index";
     @Value("${pagination.default.page.number}")
     Integer defaultPageNumber;
@@ -37,6 +39,7 @@ public class MainController {
     private String getMainPage(Model model, @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
                                @RequestParam(value = "categoryId", required = false) Integer categoryId,
                                @RequestParam(value = "itemsPerPage", required = false) Integer itemsPerPage) {
+        LOG.debug("Getting main page");
         model.addAttribute("allCategories", categoryManager.getAllCategories());
         if (pageNumber == null) pageNumber = defaultPageNumber;
         if (categoryId == null) categoryId = defaultCategoryId;

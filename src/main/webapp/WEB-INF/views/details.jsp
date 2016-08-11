@@ -40,6 +40,11 @@
         </div>
         <br/>
 
+        <div class="row text-align-center">Average user rating: <strong>${programDetails.averageRating}</strong> / Rate this app:</div><br/>
+        <div id="rating-msg" class="row text-align-center"></div>
+        <div data-program-id="${programDetails.id}" id="rating" class="row center-block"></div>
+        <br/>
+
         <div class="row text-align-center">
             <p></p>
             <img src="${serviceServerPath}/resources/images/download.gif"

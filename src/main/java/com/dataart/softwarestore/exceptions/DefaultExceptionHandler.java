@@ -4,8 +4,10 @@ import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.ModelAndView;
@@ -77,6 +79,7 @@ public class DefaultExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ModelAndView defaultExceptionHandler(HttpServletRequest req, Exception ex) throws Exception {
         LOG.error(String.format("Exception : %s. Cause: %s", ex.getMessage(), ex.getCause()));
         ModelAndView mav = new ModelAndView();

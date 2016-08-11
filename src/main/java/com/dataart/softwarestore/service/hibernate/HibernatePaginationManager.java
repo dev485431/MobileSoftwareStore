@@ -4,6 +4,7 @@ import com.dataart.softwarestore.model.domain.Program;
 import com.dataart.softwarestore.model.dto.ProgramDetailsDto;
 import com.dataart.softwarestore.service.PaginationManager;
 import com.dataart.softwarestore.utils.ImageUrlType;
+import com.dataart.softwarestore.utils.RatingsHandler;
 import com.dataart.softwarestore.utils.UrlsHandler;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -29,6 +30,8 @@ public class HibernatePaginationManager implements PaginationManager {
     private SessionFactory sessionFactory;
     @Autowired
     private UrlsHandler urlsHandler;
+    @Autowired
+    private RatingsHandler ratingsHandler;
     @Value("${pagination.item.date.format}")
     private String paginationItemDateFormat;
 
@@ -53,12 +56,14 @@ public class HibernatePaginationManager implements PaginationManager {
         });
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(paginationItemDateFormat);
-        return programs.stream().map(program -> new ProgramDetailsDto(program.getId(), program.getName(), program
-                .getDescription(),
+        return programs.stream().map(program -> new ProgramDetailsDto(program.getId(), program.getName(),
+                program.getDescription(),
                 urlsHandler.getImageUrl(program, ImageUrlType.IMAGE_128),
                 urlsHandler.getImageUrl(program, ImageUrlType.IMAGE_512),
-                program.getCategory().getName(), program.getStatistics().getTimeUploaded()
-                .format(dateFormat), program.getStatistics().getDownloads()))
+                program.getCategory().getName(),
+                program.getStatistics().getTimeUploaded().format(dateFormat),
+                program.getStatistics().getDownloads(),
+                ratingsHandler.getAverageRating(program.getStatistics().getRatings())))
                 .collect(Collectors.toList());
     }
 

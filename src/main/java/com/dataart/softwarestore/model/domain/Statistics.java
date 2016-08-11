@@ -16,8 +16,7 @@ public class Statistics {
     private OffsetDateTime timeUploaded;
     private Long downloads;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "statistics_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "statistics", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Rating> ratings;
 
     public Statistics() {
@@ -50,5 +49,23 @@ public class Statistics {
 
     public void setDownloads(Long downloads) {
         this.downloads = downloads;
+    }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
+    @Override
+    public String toString() {
+        return "Statistics{" +
+                "id=" + id +
+                ", timeUploaded=" + timeUploaded +
+                ", downloads=" + downloads +
+                ", ratings=" + ratings +
+                '}';
     }
 }

@@ -12,9 +12,10 @@ public class ProgramDetailsDto {
     private String categoryName;
     private String timeUploaded;
     private Long downloads;
+    private Float averageRating;
 
     public ProgramDetailsDto(Integer id, String name, String description, URL img128Url, URL img512Url, String
-            categoryName, String timeUploaded, Long downloads) {
+            categoryName, String timeUploaded, Long downloads, Float averageRating) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -23,6 +24,7 @@ public class ProgramDetailsDto {
         this.categoryName = categoryName;
         this.timeUploaded = timeUploaded;
         this.downloads = downloads;
+        this.averageRating = averageRating;
     }
 
     public Integer getId() {
@@ -64,7 +66,7 @@ public class ProgramDetailsDto {
     public void setImg512Url(URL img512Url) {
         this.img512Url = img512Url;
     }
-    
+
     public String getCategoryName() {
         return categoryName;
     }
@@ -87,5 +89,13 @@ public class ProgramDetailsDto {
 
     public void setDownloads(Long downloads) {
         this.downloads = downloads;
+    }
+
+    public Float getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Float averageRating) {
+        this.averageRating = averageRating;
     }
 }
