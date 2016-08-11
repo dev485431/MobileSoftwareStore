@@ -23,7 +23,7 @@ public class RatingController {
     private void addRating(@RequestParam(value = "programId") Integer programId, @RequestParam(value = "rating")
             Float rating) {
         Rating newRating = new Rating(rating);
-        LOG.debug("Adding new program rating: " + newRating);
+        LOG.debug("Adding new rating: " + rating + " to program id=" + programId);
         ratingManager.addRating(programId, newRating);
     }
 
