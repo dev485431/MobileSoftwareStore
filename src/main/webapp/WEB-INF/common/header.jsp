@@ -1,6 +1,5 @@
 <%@include file="/WEB-INF/common/taglib.jsp" %>
 
-
 <html lang="en">
 <head>
     <title>Mobile Software Store</title>

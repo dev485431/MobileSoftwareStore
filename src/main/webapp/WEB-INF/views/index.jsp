@@ -16,8 +16,20 @@
         <div class="col-xs-5 col-md-3">
             <div class="row">
                 <h4><a href="/">Home</a></h4>
-                <h4><a href="/submit">Submit new program</a></h4>
+
+                <c:choose>
+                    <c:when test="${empty pageContext.request.userPrincipal}">
+                        <h4><a href="/login">Login</a></h4>
+                    </c:when>
+                    <c:otherwise>
+                        <h4><a href="/logout">Logout</a></h4>
+                    </c:otherwise>
+                </c:choose>
+                <sec:authorize access="hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER')">
+                    <h4><a href="/submit">Submit new program</a></h4>
+                </sec:authorize>
             </div>
+
             <div class="row">
                 <h2>Categories</h2>
                 <c:forEach items="${allCategories}" var="category">

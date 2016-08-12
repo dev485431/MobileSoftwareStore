@@ -16,7 +16,18 @@
         <div class="col-xs-5 col-md-3">
             <div class="row">
                 <h4><a href="/">Home</a></h4>
-                <h4><a href="/submit">Submit new program</a></h4>
+
+                <c:choose>
+                    <c:when test="${empty pageContext.request.userPrincipal}">
+                        <h4><a href="/login">Login</a></h4>
+                    </c:when>
+                    <c:otherwise>
+                        <h4><a href="/logout">Logout</a></h4>
+                    </c:otherwise>
+                </c:choose>
+                <sec:authorize access="hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER')">
+                    <h4><a href="/submit">Submit new program</a></h4>
+                </sec:authorize>
             </div>
 
             <div class="row">
@@ -48,14 +59,14 @@
                        cssClass="form">
 
                 <div class="form-group">
-                    <label for="name">Application name</label><br>
-                    <form:errors cssClass="bg-danger" path="name"/>
+                    <label for="name">Application name</label><br/>
+                    <form:errors cssClass="bg-danger" path="name"/><br/>
                     <form:input path="name" type="text" value="${programForm.name}" cssClass="form-control"
                                 placeholder="Application name"/>
                 </div>
                 <div class="form-group">
-                    <label for="name">Category</label><br>
-                    <form:errors cssClass="bg-danger" path="categoryId"/>
+                    <label for="categoryId">Category</label><br/>
+                    <form:errors cssClass="bg-danger" path="categoryId"/><br/>
                     <form:select path="categoryId">
                         <c:forEach var="category" items="${allCategories}">
                             <option value="${category.id}">${category.name}</option>
@@ -63,8 +74,8 @@
                     </form:select>
                 </div>
                 <div class="form-group">
-                    <label for="description">Description</label><br>
-                    <form:errors cssClass="bg-danger" path="description"/>
+                    <label for="description">Description</label><br/>
+                    <form:errors cssClass="bg-danger" path="description"/><br/>
                     <form:textarea path="description" value="${programForm.description}" cssClass="form-control"
                                    placeholder="Description"/>
                 </div>

@@ -40,9 +40,13 @@
         </div>
         <br/>
 
-        <div class="row text-align-center">Average user rating: <strong>${programDetails.averageRating}</strong> / Rate this app:</div><br/>
-        <div id="rating-msg" class="row text-align-center"></div>
-        <div data-program-id="${programDetails.id}" id="rating" class="row center-block"></div>
+        <div class="row text-align-center">Average user rating: <strong>${programDetails.averageRating}</strong></div>
+        <c:if test="${not empty pageContext.request.userPrincipal}">
+            <br/>
+            <div class="row text-align-center">Rate this app:</div>
+            <div id="rating-msg" class="row text-align-center"></div>
+            <div data-program-id="${programDetails.id}" id="rating" class="row center-block"></div>
+        </c:if>
         <br/>
 
         <div class="row text-align-center">
