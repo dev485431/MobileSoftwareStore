@@ -25,7 +25,7 @@ public class WebAppSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource).usersByUsernameQuery(SQL_GET_USERS)
-                .authoritiesByUsernameQuery(SQL_GET_ROLES);
+                .authoritiesByUsernameQuery(SQL_GET_ROLES).passwordEncoder(passwordEncoder());
     }
 
     @Override
