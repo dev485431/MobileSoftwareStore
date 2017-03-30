@@ -15,6 +15,7 @@ This application is a software shop with mobile application files available for 
 
 
 <h2>Technology used: (for versions look into pom file)</h2>
+
 - Java 8
 - Spring MVC 4.x
 - Spring Security 4.x
