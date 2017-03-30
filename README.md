@@ -14,7 +14,7 @@ This application is a software shop with mobile application files available for 
 - rate program using star rating system (jQuery),
 
 
-<h2>Technology used: (for versions look into pom file)</h2>
+<h2>Technology used</h2>
 
 - Java 8
 - Spring MVC 4.x
